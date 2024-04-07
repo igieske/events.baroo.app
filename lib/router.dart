@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:baroo/layout/scaffold/scaffold.dart';
 import 'package:baroo/pages/login/login.dart';
+import 'package:baroo/pages/search/search.dart';
 
 import 'package:baroo/pages/home/home.dart';
 import 'package:baroo/pages/cases.dart';
@@ -45,6 +46,15 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginPage(),
+    ),
+
+    // search
+    GoRoute(
+      path: '/search',
+      name: 'search',
+      builder: (context, state) => SearchPage(
+        postType: state.uri.queryParameters['postType'],
+      ),
     ),
 
   ],
