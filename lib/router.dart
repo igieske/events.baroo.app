@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import 'package:baroo/layout/scaffold/scaffold.dart';
 import 'package:baroo/pages/login/login.dart';
+
+import 'package:baroo/pages/home/home.dart';
 import 'package:baroo/pages/cases.dart';
 import 'package:baroo/pages/bars.dart';
 
@@ -21,6 +23,11 @@ final GoRouter appRouter = GoRouter(
         return const AppScaffold();
       },
       routes: [
+        // home
+        GoRoute(
+          path: '/home',
+          builder: (context, state) => const HomePage(),
+        ),
         // cases
         GoRoute(
           path: '/cases',

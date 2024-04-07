@@ -4,11 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:baroo/layout/scaffold/scaffold_bloc.dart' as scaffold_bloc;
 import 'package:baroo/layout/drawer_menu.dart';
 
+import 'package:baroo/pages/home/home.dart';
 import 'package:baroo/pages/cases.dart';
 import 'package:baroo/pages/bars.dart';
 
 
 final List<Tab> _tabs = [
+  Tab(
+    'Baroo',
+    'home',
+    const HomePage(),
+    const Icon(Icons.home_outlined),
+  ),
   Tab(
     'События',
     'cases',
