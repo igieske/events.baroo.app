@@ -1,4 +1,4 @@
-package com.example.baroo
+package events.baroo.app
 
 import io.flutter.embedding.android.FlutterActivity
 
