@@ -34,13 +34,22 @@ class _SearchPageState extends State<SearchPage> {
         return const Center(child: Text('postType is not defined'));
     }
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Text(title),
-        ],
+    return Scaffold(
+
+      appBar: AppBar(
+        title: Text(title),
       ),
+
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Text(title),
+          ],
+        ),
+      ),
+
     );
+
   }
 }
