@@ -1,4 +1,4 @@
-// общие функции и константы
+// общие функции
 
 import 'package:url_launcher/url_launcher.dart';
 
