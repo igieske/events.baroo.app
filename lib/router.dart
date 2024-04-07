@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:baroo/layout/scaffold/scaffold.dart';
-import 'package:baroo/pages/login.dart';
+import 'package:baroo/pages/login/login.dart';
 import 'package:baroo/pages/cases.dart';
 import 'package:baroo/pages/bars.dart';
 
