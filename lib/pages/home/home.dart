@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,8 +16,18 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           FilledButton(
-              onPressed: () {},
+            onPressed: () => context.pushNamed(
+                'search',
+                queryParameters: { 'postType': 'case' }
+            ),
               child: const Text('Поиск событий'),
+          ),
+          FilledButton(
+            onPressed: () => context.pushNamed(
+              'search',
+              queryParameters: { 'postType': 'bar' }
+            ),
+            child: const Text('Поиск мест'),
           ),
         ],
       ),
