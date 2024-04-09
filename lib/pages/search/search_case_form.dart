@@ -12,8 +12,30 @@ class SearchCaseForm extends StatefulWidget {
 
 class _SearchCaseFormState extends State<SearchCaseForm> {
 
+  final _selectedButtonStyle = TextButton.styleFrom(
+    backgroundColor: Colors.accents.first,
+    foregroundColor: Colors.white
+  );
+
+  final DateTime today = DateTime.now().copyWith(
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+      microsecond: 0
+  );
+  late final DateTime tomorrow;
+
   DateTime? dateStart;
   DateTime? dateEnd;
+
+  @override
+  void initState() {
+    dateStart = today;
+    dateEnd = today;
+    tomorrow = today.add(const Duration(days: 1));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,26 +54,42 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
         const SizedBox(height: 10),
         Row(
           children: [
-            OutlinedButton(
-              onPressed: () {},
+            FilledButton.tonal(
+              onPressed: () {
+                setState(() {
+                  dateStart = today;
+                  dateEnd = today;
+                });
+              },
+              style: dateStart == today && dateEnd == today
+                  ? _selectedButtonStyle : null,
               child: const Text('Сегодня'),
             ),
             const SizedBox(width: 8),
-            OutlinedButton(
-              onPressed: () {},
+            FilledButton.tonal(
+              onPressed: () {
+                setState(() {
+                  dateStart = tomorrow;
+                  dateEnd = tomorrow;
+                });
+              },
+              style: dateStart == tomorrow && dateEnd == tomorrow
+                  ? _selectedButtonStyle : null,
               child: const Text('Завтра'),
             ),
             const SizedBox(width: 8),
-            OutlinedButton(
+            FilledButton.tonal(
+              style: dateStart != dateEnd || (dateStart != null && dateStart != today && dateStart != tomorrow)
+                  ? _selectedButtonStyle : null,
               onPressed: () async {
                 DateTimeRange? datePickerResult = await showDateRangePicker(
                   context: context,
                   locale: const Locale('ru'),
                   initialDateRange: (dateStart != null && dateEnd != null)
                     ? DateTimeRange(start: dateStart!, end:  dateEnd!) : null,
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime.now().add(const Duration(days: 90)),
-                  currentDate: DateTime.now(),
+                  firstDate: today,
+                  lastDate: today.add(const Duration(days: 90)),
+                  currentDate: today,
                   initialEntryMode: DatePickerEntryMode.calendarOnly,
                   saveText: 'Выбрать',
                 );
@@ -62,10 +100,10 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
                   });
                 }
               },
-              child: const Text('Выбрать'),
+              child: const Text('Выбрать...'),
             ),
           ],
-        )
+        ),
       ],
     );
   }
