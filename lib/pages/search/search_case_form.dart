@@ -29,6 +29,8 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
   DateTime? dateStart;
   DateTime? dateEnd;
 
+  List<String> caseTypes = [];
+
   @override
   void initState() {
     dateStart = today;
@@ -42,6 +44,7 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+
         Text([
           'Дата',
           [
@@ -52,32 +55,27 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
           ].join(' – '),
         ].join(': ')),
         const SizedBox(height: 10),
-        Row(
+        Wrap(
+          spacing: 6,
           children: [
             FilledButton.tonal(
-              onPressed: () {
-                setState(() {
-                  dateStart = today;
-                  dateEnd = today;
-                });
-              },
+              onPressed: () => setState(() {
+                dateStart = today;
+                dateEnd = today;
+              }),
               style: dateStart == today && dateEnd == today
                   ? _selectedButtonStyle : null,
               child: const Text('Сегодня'),
             ),
-            const SizedBox(width: 8),
             FilledButton.tonal(
-              onPressed: () {
-                setState(() {
-                  dateStart = tomorrow;
-                  dateEnd = tomorrow;
-                });
-              },
+              onPressed: () => setState(() {
+                dateStart = tomorrow;
+                dateEnd = tomorrow;
+              }),
               style: dateStart == tomorrow && dateEnd == tomorrow
                   ? _selectedButtonStyle : null,
               child: const Text('Завтра'),
             ),
-            const SizedBox(width: 8),
             FilledButton.tonal(
               style: dateStart != dateEnd || (dateStart != null && dateStart != today && dateStart != tomorrow)
                   ? _selectedButtonStyle : null,
@@ -86,7 +84,7 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
                   context: context,
                   locale: const Locale('ru'),
                   initialDateRange: (dateStart != null && dateEnd != null)
-                    ? DateTimeRange(start: dateStart!, end:  dateEnd!) : null,
+                      ? DateTimeRange(start: dateStart!, end:  dateEnd!) : null,
                   firstDate: today,
                   lastDate: today.add(const Duration(days: 90)),
                   currentDate: today,
@@ -104,6 +102,47 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
             ),
           ],
         ),
+
+        const SizedBox(height: 20),
+
+        const Text('Тип события'),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 6,
+          children: [
+            {
+              'value': 'live-music',
+              'label': 'Живая музыка'
+            },
+            {
+              'value': 'poetry',
+              'label': 'Поэзия'
+            },
+            {
+              'value': 'standup',
+              'label': 'Стендап'
+            },
+            {
+              'value': 'theatre',
+              'label': 'Театр'
+            },
+          ].map((caseType) {
+            final bool isOn = caseTypes.contains(caseType['value']);
+            return FilledButton.tonal(
+            onPressed: () => setState(() {
+              if (isOn) {
+                caseTypes.removeWhere((item) => item == caseType['value']);
+              } else {
+                caseTypes.add(caseType['value']!);
+              }
+            }),
+            style: isOn ? _selectedButtonStyle : null,
+            child: Text(caseType['label']!),
+          );
+          }).toList(),
+        ),
+
+
       ],
     );
   }
