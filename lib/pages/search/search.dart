@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:baroo/pages/search/search_case_form.dart';
 
 
 class SearchPage extends StatefulWidget {
@@ -15,10 +16,12 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     String title = '';
+    Widget? searchForm;
 
     switch (widget.postType) {
       case 'case':
         title = 'Поиск событий';
+        searchForm = const SearchCaseForm();
         break;
       case 'bar':
         title = 'Поиск мест';
@@ -43,8 +46,16 @@ class _SearchPageState extends State<SearchPage> {
       body: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(title),
+            if (searchForm != null) Expanded(
+              child: searchForm,
+            ),
+            const SizedBox(height: 10),
+            FilledButton(
+              onPressed: () {},
+              child: const Text('Показать'),
+            )
           ],
         ),
       ),
