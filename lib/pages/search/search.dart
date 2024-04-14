@@ -17,11 +17,16 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     String title = '';
     Widget? searchForm;
+    bool isDefaultFiltersActive = false;
+
+    submitFilters(Map<String, dynamic> args) {
+      print(args);
+    }
 
     switch (widget.postType) {
       case 'case':
         title = 'Поиск событий';
-        searchForm = const SearchCaseForm();
+        searchForm = SearchCaseForm(submitFilters: submitFilters);
         break;
       case 'bar':
         title = 'Поиск мест';
@@ -37,27 +42,35 @@ class _SearchPageState extends State<SearchPage> {
         return const Center(child: Text('postType is not defined'));
     }
 
+    saveDefaultFilters() async {
+
+    }
+
     return Scaffold(
 
       appBar: AppBar(
         title: Text(title),
+        actions: [
+          if (isDefaultFiltersActive) const IconButton(
+              onPressed: null,
+              icon: Icon(Icons.how_to_reg_outlined),
+              disabledColor: Colors.black26,
+          ),
+          PopupMenuButton(
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem(
+                  onTap: saveDefaultFilters,
+                  child: const Text('Сохранить фильтры по умолчанию'),
+                ),
+              ],
+            position: PopupMenuPosition.under,
+          ),
+        ],
       ),
 
       body: Container(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (searchForm != null) Expanded(
-              child: searchForm,
-            ),
-            const SizedBox(height: 10),
-            FilledButton(
-              onPressed: () {},
-              child: const Text('Показать'),
-            )
-          ],
-        ),
+        child: searchForm,
       ),
 
     );

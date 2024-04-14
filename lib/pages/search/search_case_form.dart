@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
 
 class SearchCaseForm extends StatefulWidget {
-  const SearchCaseForm({super.key});
+  final Function(Map<String, dynamic> args) submitFilters;
+
+  const SearchCaseForm({super.key, required this.submitFilters});
 
   @override
   State<SearchCaseForm> createState() => _SearchCaseFormState();
@@ -32,6 +35,20 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
   List<String> caseTypes = [];
   List<String> caseGenres = [];
 
+  Map<String, dynamic> encodeSearchForm() {
+    Map<String, dynamic> args = {};
+    // даты в формате: 20240131 / 20240130_20240131
+    if (dateStart != null && dateEnd != null) {
+      final String dateStartFormat = DateFormat('yyyyMMdd').format(dateStart!);
+      final String dateEndFormat = DateFormat('yyyyMMdd').format(dateEnd!);
+      args['dates'] = dateStartFormat +
+          (dateStartFormat != dateEndFormat ? '_$dateEndFormat' : '');
+    }
+
+
+    return args;
+  }
+
   @override
   void initState() {
     dateStart = today;
@@ -43,153 +60,167 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-        Text([
-          'Дата',
-          [
-            if (dateStart != null)
-              DateFormat('dd.MM.yyyy').format(dateStart!),
-            if (dateEnd != null && dateEnd != dateStart)
-              DateFormat('dd.MM.yyyy').format(dateEnd!),
-          ].join(' – '),
-        ].join(': ')),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 6,
-          children: [
-            FilledButton.tonal(
-              onPressed: () => setState(() {
-                dateStart = today;
-                dateEnd = today;
-              }),
-              style: dateStart == today && dateEnd == today
-                  ? _selectedButtonStyle : null,
-              child: const Text('Сегодня'),
-            ),
-            FilledButton.tonal(
-              onPressed: () => setState(() {
-                dateStart = tomorrow;
-                dateEnd = tomorrow;
-              }),
-              style: dateStart == tomorrow && dateEnd == tomorrow
-                  ? _selectedButtonStyle : null,
-              child: const Text('Завтра'),
-            ),
-            FilledButton.tonal(
-              style: dateStart != dateEnd || (dateStart != null && dateStart != today && dateStart != tomorrow)
-                  ? _selectedButtonStyle : null,
-              onPressed: () async {
-                DateTimeRange? datePickerResult = await showDateRangePicker(
-                  context: context,
-                  locale: const Locale('ru'),
-                  initialDateRange: (dateStart != null && dateEnd != null)
-                      ? DateTimeRange(start: dateStart!, end:  dateEnd!) : null,
-                  firstDate: today,
-                  lastDate: today.add(const Duration(days: 90)),
-                  currentDate: today,
-                  initialEntryMode: DatePickerEntryMode.calendarOnly,
-                  saveText: 'Выбрать',
+              Text([
+                'Дата',
+                [
+                  if (dateStart != null)
+                    DateFormat('dd.MM.yyyy').format(dateStart!),
+                  if (dateEnd != null && dateEnd != dateStart)
+                    DateFormat('dd.MM.yyyy').format(dateEnd!),
+                ].join(' – '),
+              ].join(': ')),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 6,
+                children: [
+                  FilledButton.tonal(
+                    onPressed: () => setState(() {
+                      dateStart = today;
+                      dateEnd = today;
+                    }),
+                    style: dateStart == today && dateEnd == today
+                        ? _selectedButtonStyle : null,
+                    child: const Text('Сегодня'),
+                  ),
+                  FilledButton.tonal(
+                    onPressed: () => setState(() {
+                      dateStart = tomorrow;
+                      dateEnd = tomorrow;
+                    }),
+                    style: dateStart == tomorrow && dateEnd == tomorrow
+                        ? _selectedButtonStyle : null,
+                    child: const Text('Завтра'),
+                  ),
+                  FilledButton.tonal(
+                    style: dateStart != dateEnd || (dateStart != null && dateStart != today && dateStart != tomorrow)
+                        ? _selectedButtonStyle : null,
+                    onPressed: () async {
+                      DateTimeRange? datePickerResult = await showDateRangePicker(
+                        context: context,
+                        locale: const Locale('ru'),
+                        initialDateRange: (dateStart != null && dateEnd != null)
+                            ? DateTimeRange(start: dateStart!, end:  dateEnd!) : null,
+                        firstDate: today,
+                        lastDate: today.add(const Duration(days: 90)),
+                        currentDate: today,
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        saveText: 'Выбрать',
+                      );
+                      if (datePickerResult != null) {
+                        setState(() {
+                          dateStart = datePickerResult.start;
+                          dateEnd = datePickerResult.end;
+                        });
+                      }
+                    },
+                    child: const Text('Выбрать...'),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              const Text('Тип события'),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 6,
+                children: [
+                  {
+                    'value': 'live-music',
+                    'label': 'Живая музыка'
+                  },
+                  {
+                    'value': 'poetry',
+                    'label': 'Поэзия'
+                  },
+                  {
+                    'value': 'standup',
+                    'label': 'Стендап'
+                  },
+                  {
+                    'value': 'theatre',
+                    'label': 'Театр'
+                  },
+                ].map((caseType) {
+                  final bool isOn = caseTypes.contains(caseType['value']);
+                  return FilledButton.tonal(
+                  onPressed: () => setState(() {
+                    if (isOn) {
+                      caseTypes.removeWhere((item) => item == caseType['value']);
+                    } else {
+                      caseTypes.add(caseType['value']!);
+                    }
+                  }),
+                  style: isOn ? _selectedButtonStyle : null,
+                  child: Text(caseType['label']!),
                 );
-                if (datePickerResult != null) {
-                  setState(() {
-                    dateStart = datePickerResult.start;
-                    dateEnd = datePickerResult.end;
-                  });
-                }
-              },
-              child: const Text('Выбрать...'),
-            ),
-          ],
+                }).toList(),
+              ),
+
+              const SizedBox(height: 20),
+
+              const Text('Жанры'),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 6,
+                children: [
+                  {
+                    'value': 'pop',
+                    'label': 'поп'
+                  },
+                  {
+                    'value': 'reggae',
+                    'label': 'рэгги'
+                  },
+                  {
+                    'value': 'jazz',
+                    'label': 'джаз'
+                  },
+                  {
+                    'value': 'rock',
+                    'label': 'рок'
+                  },
+                  {
+                    'value': 'electronic',
+                    'label': 'электронная'
+                  },
+                  {
+                    'value': 'folk',
+                    'label': 'фолк / народная'
+                  },
+                ].map((caseType) {
+                  final bool isOn = caseGenres.contains(caseType['value']);
+                  return FilledButton.tonal(
+                    onPressed: () => setState(() {
+                      if (isOn) {
+                        caseGenres.removeWhere((item) => item == caseType['value']);
+                      } else {
+                        caseGenres.add(caseType['value']!);
+                      }
+                    }),
+                    style: isOn ? _selectedButtonStyle : null,
+                    child: Text(caseType['label']!),
+                  );
+                }).toList(),
+              ),
+
+            ],
+          ),
         ),
-
-        const SizedBox(height: 20),
-
-        const Text('Тип события'),
         const SizedBox(height: 10),
-        Wrap(
-          spacing: 6,
-          children: [
-            {
-              'value': 'live-music',
-              'label': 'Живая музыка'
-            },
-            {
-              'value': 'poetry',
-              'label': 'Поэзия'
-            },
-            {
-              'value': 'standup',
-              'label': 'Стендап'
-            },
-            {
-              'value': 'theatre',
-              'label': 'Театр'
-            },
-          ].map((caseType) {
-            final bool isOn = caseTypes.contains(caseType['value']);
-            return FilledButton.tonal(
-            onPressed: () => setState(() {
-              if (isOn) {
-                caseTypes.removeWhere((item) => item == caseType['value']);
-              } else {
-                caseTypes.add(caseType['value']!);
-              }
-            }),
-            style: isOn ? _selectedButtonStyle : null,
-            child: Text(caseType['label']!),
-          );
-          }).toList(),
-        ),
-
-        const SizedBox(height: 20),
-
-        const Text('Жанры'),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 6,
-          children: [
-            {
-              'value': 'pop',
-              'label': 'поп'
-            },
-            {
-              'value': 'reggae',
-              'label': 'рэгги'
-            },
-            {
-              'value': 'jazz',
-              'label': 'джаз'
-            },
-            {
-              'value': 'rock',
-              'label': 'рок'
-            },
-            {
-              'value': 'electronic',
-              'label': 'электронная'
-            },
-            {
-              'value': 'folk',
-              'label': 'фолк / народная'
-            },
-          ].map((caseType) {
-            final bool isOn = caseGenres.contains(caseType['value']);
-            return FilledButton.tonal(
-              onPressed: () => setState(() {
-                if (isOn) {
-                  caseGenres.removeWhere((item) => item == caseType['value']);
-                } else {
-                  caseGenres.add(caseType['value']!);
-                }
-              }),
-              style: isOn ? _selectedButtonStyle : null,
-              child: Text(caseType['label']!),
-            );
-          }).toList(),
-        ),
-
+        FilledButton(
+          onPressed: () {
+            widget.submitFilters(encodeSearchForm());
+          },
+          child: const Text('Показать'),
+        )
       ],
     );
   }
