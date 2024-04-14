@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:baroo/models/post_type.dart';
+
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -18,14 +21,14 @@ class _HomePageState extends State<HomePage> {
           FilledButton(
             onPressed: () => context.pushNamed(
                 'search',
-                queryParameters: { 'postType': 'case' }
+                extra: { 'postType': PostTypes.cs }
             ),
-              child: const Text('Поиск событий'),
+            child: const Text('Поиск событий'),
           ),
           FilledButton(
             onPressed: () => context.pushNamed(
-              'search',
-              queryParameters: { 'postType': 'bar' }
+                'search',
+                extra: { 'postType': PostTypes.bar }
             ),
             child: const Text('Поиск мест'),
           ),

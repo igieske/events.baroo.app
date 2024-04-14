@@ -53,7 +53,7 @@ final GoRouter appRouter = GoRouter(
       path: '/search',
       name: 'search',
       builder: (context, state) => SearchPage(
-        postType: state.uri.queryParameters['postType'],
+        args: state.extra as Map<String, dynamic>,
       ),
     ),
 

@@ -1,12 +1,13 @@
+import 'package:baroo/models/post_type.dart';
 import 'package:flutter/material.dart';
 
 import 'package:baroo/pages/search/search_case_form.dart';
 
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key, this.postType});
+  const SearchPage({super.key, required this.args});
 
-  final String? postType;
+  final Map<String, dynamic> args;
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -23,18 +24,18 @@ class _SearchPageState extends State<SearchPage> {
       print(args);
     }
 
-    switch (widget.postType) {
-      case 'case':
+    switch (widget.args['postType']) {
+      case PostTypes.cs:
         title = 'Поиск событий';
         searchForm = SearchCaseForm(submitFilters: submitFilters);
         break;
-      case 'bar':
+      case PostTypes.bar:
         title = 'Поиск мест';
         break;
-      case 'band':
+      case PostTypes.band:
         title = 'Поиск бэндов';
         break;
-      case 'fella':
+      case PostTypes.fella:
         title = 'Поиск людей';
         break;
       case null:
