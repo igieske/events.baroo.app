@@ -1,8 +1,32 @@
 // константы
 
+import 'package:baroo/models/post_type.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/case_genre.dart';
 
+
+final List<PostType> postTypes = [
+  PostType(
+    type: PostTypes.cs,
+    slug: 'case',
+    label: 'Событие',
+  ),
+  PostType(
+    type: PostTypes.bar,
+    slug: 'bar',
+    label: 'Место',
+  ),
+  PostType(
+    type: PostTypes.band,
+    slug: 'band',
+    label: 'Бэнд',
+  ),
+  PostType(
+    type: PostTypes.fella,
+    slug: 'fella',
+    label: 'Фэлла',
+  ),
+];
 
 final List<CaseType> caseTypes = [
   CaseType(
@@ -33,14 +57,14 @@ final List<CaseType> caseTypes = [
 
 final List<CaseGenre> caseGenres = [
   CaseGenre(
-      type: CaseGenres.jazz,
-      slug: 'jazz',
-      label: 'Джаз',
-      subgenres: [
-        CaseSubGenres.blues,
-        CaseSubGenres.soul,
-        CaseSubGenres.funk,
-      ],
+    type: CaseGenres.jazz,
+    slug: 'jazz',
+    label: 'Джаз',
+    subgenres: [
+      CaseSubGenres.blues,
+      CaseSubGenres.soul,
+      CaseSubGenres.funk,
+    ],
   ),
   CaseGenre(
     type: CaseGenres.rock,
