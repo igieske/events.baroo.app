@@ -1,6 +1,8 @@
 // константы
 
 import 'package:baroo/models/case_type.dart';
+import 'package:baroo/models/case_genre.dart';
+
 
 final List<CaseType> caseTypes = [
   CaseType(
@@ -26,5 +28,34 @@ final List<CaseType> caseTypes = [
       type: CaseTypes.theatre,
       slug: 'theatre',
       label: 'Театр'
+  ),
+];
+
+final List<CaseGenre> caseGenres = [
+  CaseGenre(
+      type: CaseGenres.jazz,
+      slug: 'jazz',
+      label: 'Джаз',
+      subgenres: [
+        CaseSubGenres.blues,
+        CaseSubGenres.soul,
+        CaseSubGenres.funk,
+      ],
+  ),
+  CaseGenre(
+    type: CaseGenres.rock,
+    slug: 'rock',
+    label: 'Рок',
+    subgenres: [
+      CaseSubGenres.alternative,
+      CaseSubGenres.rockNRoll,
+      CaseSubGenres.punk,
+      CaseSubGenres.ska,
+      CaseSubGenres.postRock,
+      CaseSubGenres.popRock,
+      CaseSubGenres.indieRock,
+      CaseSubGenres.metal,
+      CaseSubGenres.country,
+    ],
   ),
 ];
