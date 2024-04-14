@@ -30,6 +30,7 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
   DateTime? dateEnd;
 
   List<String> caseTypes = [];
+  List<String> caseGenres = [];
 
   @override
   void initState() {
@@ -142,6 +143,52 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
           }).toList(),
         ),
 
+        const SizedBox(height: 20),
+
+        const Text('Жанры'),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 6,
+          children: [
+            {
+              'value': 'pop',
+              'label': 'поп'
+            },
+            {
+              'value': 'reggae',
+              'label': 'рэгги'
+            },
+            {
+              'value': 'jazz',
+              'label': 'джаз'
+            },
+            {
+              'value': 'rock',
+              'label': 'рок'
+            },
+            {
+              'value': 'electronic',
+              'label': 'электронная'
+            },
+            {
+              'value': 'folk',
+              'label': 'фолк / народная'
+            },
+          ].map((caseType) {
+            final bool isOn = caseGenres.contains(caseType['value']);
+            return FilledButton.tonal(
+              onPressed: () => setState(() {
+                if (isOn) {
+                  caseGenres.removeWhere((item) => item == caseType['value']);
+                } else {
+                  caseGenres.add(caseType['value']!);
+                }
+              }),
+              style: isOn ? _selectedButtonStyle : null,
+              child: Text(caseType['label']!),
+            );
+          }).toList(),
+        ),
 
       ],
     );
