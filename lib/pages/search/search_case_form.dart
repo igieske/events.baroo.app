@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+
+import 'package:baroo/models/case_type.dart';
+import 'package:baroo/services/constants.dart';
 
 
 class SearchCaseForm extends StatefulWidget {
@@ -32,8 +34,8 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
   DateTime? dateStart;
   DateTime? dateEnd;
 
-  List<String> caseTypes = [];
-  List<String> caseGenres = [];
+  List<CaseType> formCaseTypes = List.from(caseTypes);
+  List<String> formCaseGenres = [];
 
   Map<String, dynamic> encodeSearchForm() {
     Map<String, dynamic> args = {};
@@ -44,8 +46,10 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
       args['dates'] = dateStartFormat +
           (dateStartFormat != dateEndFormat ? '_$dateEndFormat' : '');
     }
-
-
+    // типы кейсов
+    if (caseTypes.length != formCaseTypes.length) {
+      args['case_types'] = formCaseTypes.map((item) => item.slug);
+    }
     return args;
   }
 
@@ -131,36 +135,19 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
               const SizedBox(height: 10),
               Wrap(
                 spacing: 6,
-                children: [
-                  {
-                    'value': 'live-music',
-                    'label': 'Живая музыка'
-                  },
-                  {
-                    'value': 'poetry',
-                    'label': 'Поэзия'
-                  },
-                  {
-                    'value': 'standup',
-                    'label': 'Стендап'
-                  },
-                  {
-                    'value': 'theatre',
-                    'label': 'Театр'
-                  },
-                ].map((caseType) {
-                  final bool isOn = caseTypes.contains(caseType['value']);
+                children: caseTypes.map((CaseType caseType) {
+                  final bool isOn = formCaseTypes.contains(caseType);
                   return FilledButton.tonal(
-                  onPressed: () => setState(() {
-                    if (isOn) {
-                      caseTypes.removeWhere((item) => item == caseType['value']);
-                    } else {
-                      caseTypes.add(caseType['value']!);
-                    }
-                  }),
-                  style: isOn ? _selectedButtonStyle : null,
-                  child: Text(caseType['label']!),
-                );
+                    onPressed: () => setState(() {
+                      if (isOn) {
+                        formCaseTypes.removeWhere((item) => item == caseType);
+                      } else {
+                        formCaseTypes.add(caseType);
+                      }
+                    }),
+                    style: isOn ? _selectedButtonStyle : null,
+                    child: Text(caseType.label),
+                  );
                 }).toList(),
               ),
 
@@ -196,13 +183,14 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
                     'label': 'фолк / народная'
                   },
                 ].map((caseType) {
-                  final bool isOn = caseGenres.contains(caseType['value']);
+                  final bool isOn =
+                    formCaseGenres.isEmpty || formCaseGenres.contains(caseType['value']);
                   return FilledButton.tonal(
                     onPressed: () => setState(() {
                       if (isOn) {
-                        caseGenres.removeWhere((item) => item == caseType['value']);
+                        formCaseGenres.removeWhere((item) => item == caseType['value']);
                       } else {
-                        caseGenres.add(caseType['value']!);
+                        formCaseGenres.add(caseType['value']!);
                       }
                     }),
                     style: isOn ? _selectedButtonStyle : null,
