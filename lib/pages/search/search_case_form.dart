@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:baroo/models/case_type.dart';
+import 'package:baroo/models/case_genre.dart';
 import 'package:baroo/services/constants.dart';
 
 
@@ -35,7 +36,7 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
   DateTime? dateEnd;
 
   List<CaseType> formCaseTypes = List.from(caseTypes);
-  List<String> formCaseGenres = [];
+  List<CaseGenre> formCaseGenres = List.from(caseGenres);
 
   Map<String, dynamic> encodeSearchForm() {
     Map<String, dynamic> args = {};
@@ -50,6 +51,7 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
     if (caseTypes.length != formCaseTypes.length) {
       args['case_types'] = formCaseTypes.map((item) => item.slug);
     }
+    // todo: жанры
     return args;
   }
 
@@ -157,44 +159,18 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
               const SizedBox(height: 10),
               Wrap(
                 spacing: 6,
-                children: [
-                  {
-                    'value': 'pop',
-                    'label': 'поп'
-                  },
-                  {
-                    'value': 'reggae',
-                    'label': 'рэгги'
-                  },
-                  {
-                    'value': 'jazz',
-                    'label': 'джаз'
-                  },
-                  {
-                    'value': 'rock',
-                    'label': 'рок'
-                  },
-                  {
-                    'value': 'electronic',
-                    'label': 'электронная'
-                  },
-                  {
-                    'value': 'folk',
-                    'label': 'фолк / народная'
-                  },
-                ].map((caseType) {
-                  final bool isOn =
-                    formCaseGenres.isEmpty || formCaseGenres.contains(caseType['value']);
+                children: caseGenres.map((CaseGenre caseGenre) {
+                  final bool isOn = formCaseGenres.contains(caseGenre);
                   return FilledButton.tonal(
                     onPressed: () => setState(() {
                       if (isOn) {
-                        formCaseGenres.removeWhere((item) => item == caseType['value']);
+                        formCaseGenres.removeWhere((item) => item == caseGenre);
                       } else {
-                        formCaseGenres.add(caseType['value']!);
+                        formCaseGenres.add(caseGenre);
                       }
                     }),
                     style: isOn ? _selectedButtonStyle : null,
-                    child: Text(caseType['label']!),
+                    child: Text(caseGenre.label),
                   );
                 }).toList(),
               ),
