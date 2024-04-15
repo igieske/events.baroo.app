@@ -14,7 +14,7 @@ class LocalStorage {
     return File('$path/local_storage.txt');
   }
 
-  Future<Map<String, String>?> read() async {
+  Future<Map<String, dynamic>?> read() async {
     try {
       final file = await _localFile;
       final contents = await file.readAsString();
