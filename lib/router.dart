@@ -1,4 +1,4 @@
-import 'package:baroo/services/local_storage.dart';
+import 'package:baroo/services/local_storage/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:convert';
 
-import 'package:baroo/services/local_storage.dart';
+import 'package:baroo/services/local_storage/local_storage.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/case_genre.dart';
 import 'package:baroo/services/constants.dart';

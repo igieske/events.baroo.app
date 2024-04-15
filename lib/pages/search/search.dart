@@ -1,7 +1,7 @@
 import 'package:baroo/models/post_type.dart';
 import 'package:flutter/material.dart';
 
-import 'package:baroo/services/local_storage.dart';
+import 'package:baroo/services/local_storage/local_storage.dart';
 import 'package:baroo/pages/search/search_case_form.dart';
 
 
