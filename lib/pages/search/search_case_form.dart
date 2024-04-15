@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
+import 'dart:convert';
 
+import 'package:baroo/services/local_storage.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/case_genre.dart';
 import 'package:baroo/services/constants.dart';
@@ -9,14 +10,19 @@ import 'package:baroo/services/constants.dart';
 
 class SearchCaseForm extends StatefulWidget {
   final Function(Map<String, dynamic> args) submitFilters;
+  final LocalStorage localStorage;
 
-  const SearchCaseForm({super.key, required this.submitFilters});
+  const SearchCaseForm({
+    super.key,
+    required this.submitFilters,
+    required this.localStorage,
+  });
 
   @override
-  State<SearchCaseForm> createState() => _SearchCaseFormState();
+  State<SearchCaseForm> createState() => SearchCaseFormState();
 }
 
-class _SearchCaseFormState extends State<SearchCaseForm> {
+class SearchCaseFormState extends State<SearchCaseForm> {
 
   final _selectedButtonStyle = TextButton.styleFrom(
     backgroundColor: Colors.accents.first,
@@ -60,6 +66,12 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
     dateStart = today;
     dateEnd = today;
     tomorrow = today.add(const Duration(days: 1));
+    widget.localStorage.read().then((value) {
+      setState(() {
+        print(value);
+        // formCaseTypes = value['searchCaseTypeDefault'];
+      });
+    });
     super.initState();
   }
 
@@ -174,17 +186,9 @@ class _SearchCaseFormState extends State<SearchCaseForm> {
                   );
                 }).toList(),
               ),
-
             ],
           ),
         ),
-        const SizedBox(height: 10),
-        FilledButton(
-          onPressed: () {
-            widget.submitFilters(encodeSearchForm());
-          },
-          child: const Text('Показать'),
-        )
       ],
     );
   }
