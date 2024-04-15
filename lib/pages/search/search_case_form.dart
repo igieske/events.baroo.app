@@ -9,13 +9,8 @@ import 'package:baroo/services/constants.dart';
 
 class SearchCaseForm extends StatefulWidget {
   final Function(Map<String, dynamic> args) submitFilters;
-  final LocalStorage localStorage;
 
-  const SearchCaseForm({
-    super.key,
-    required this.submitFilters,
-    required this.localStorage,
-  });
+  const SearchCaseForm({super.key, required this.submitFilters});
 
   @override
   State<SearchCaseForm> createState() => SearchCaseFormState();
@@ -65,12 +60,6 @@ class SearchCaseFormState extends State<SearchCaseForm> {
     dateStart = today;
     dateEnd = today;
     tomorrow = today.add(const Duration(days: 1));
-    widget.localStorage.read().then((value) {
-      setState(() {
-        print(value);
-        // formCaseTypes = value['searchCaseTypeDefault'];
-      });
-    });
     super.initState();
   }
 

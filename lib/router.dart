@@ -55,7 +55,6 @@ final GoRouter appRouter = GoRouter(
       name: 'search',
       builder: (context, state) => SearchPage(
         args: state.extra as Map<String, dynamic>,
-        localStorage: LocalStorage(),
       ),
     ),
 

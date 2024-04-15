@@ -1,15 +1,13 @@
 import 'package:baroo/models/post_type.dart';
 import 'package:flutter/material.dart';
 
-import 'package:baroo/services/local_storage/local_storage.dart';
 import 'package:baroo/pages/search/search_case_form.dart';
 
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key, required this.args, required this.localStorage});
+  const SearchPage({super.key, required this.args});
 
   final Map<String, dynamic> args;
-  final LocalStorage localStorage;
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -35,7 +33,6 @@ class _SearchPageState extends State<SearchPage> {
         title = 'Поиск событий';
         searchForm = SearchCaseForm(
           key: searchFormKey,
-          localStorage: widget.localStorage,
           submitFilters: submitFilters,
         );
         break;
@@ -55,10 +52,8 @@ class _SearchPageState extends State<SearchPage> {
 
     saveDefaultFilters() async {
       final searchCaseTypeDefault =
-        searchFormKey.currentState!.formCaseTypes.map((e) => e.id).toList();
-      widget.localStorage.write({
-        'searchCaseTypeDefault': searchCaseTypeDefault,
-      });
+        searchFormKey.currentState!.formCaseTypes.map((e) => e.slug).toList();
+      // todo - записать в bloc
     }
 
     return Scaffold(
