@@ -8,7 +8,13 @@ import 'package:baroo/services/local_storage/local_storage_bloc.dart';
 
 import 'router.dart';
 
-void main() {
+
+void main() async {
+
+  // final localStorage = await LocalStorage.read();
+  final localStorageBloc = LocalStorageBloc();
+  localStorageBloc.add(LocalStorageLoadEvent(localStorageBloc.state.data));
+
   runApp(const MyApp());
 }
 
