@@ -1,6 +1,8 @@
-import 'package:baroo/models/post_type.dart';
 import 'package:flutter/material.dart';
 
+import 'package:baroo/services/local_storage/local_storage_bloc.dart';
+
+import 'package:baroo/models/post_type.dart';
 import 'package:baroo/pages/search/search_case_form.dart';
 
 
@@ -51,9 +53,18 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     saveDefaultFilters() async {
-      final searchCaseTypeDefault =
-        searchFormKey.currentState!.formCaseTypes.map((e) => e.slug).toList();
-      // todo - записать в bloc
+      final localStorageBloc = LocalStorageBloc();
+      print(localStorageBloc.state.data);
+      // return;
+      final searchCaseState = searchFormKey.currentState;
+      final caseTypes = searchCaseState!.formCaseTypes.map((e) => e.slug).toList();
+      final caseGenres = searchCaseState.formCaseGenres.map((e) => e.slug).toList();
+      final defaults = {
+        'caseTypes': caseTypes,
+        'caseGenres': caseGenres,
+      };
+      // final localStorageBloc = LocalStorageBloc();
+      localStorageBloc.add(LocalStorageUpdateEvent(defaults));
     }
 
     return Scaffold(
@@ -84,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
           if (searchForm != null) Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20),
-              child: searchForm
+              child: searchForm,
             ),
           ),
           Padding(
