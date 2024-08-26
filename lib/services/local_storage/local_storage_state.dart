@@ -2,16 +2,37 @@ part of 'local_storage_bloc.dart';
 
 @immutable
 class LocalStorageState {
-  final int selectedTabIndex;
-  final PageController pageController = PageController(initialPage: 0);
+  final Map<String, dynamic> data;
 
-  LocalStorageState({ this.selectedTabIndex = 0 });
+  const LocalStorageState({ this.data = const <String, dynamic>{} });
 
-  LocalStorageState copyWith({ required int selectedTabIndex }) {
-    pageController.jumpToPage(selectedTabIndex);
+  LocalStorageState update(Map<String, dynamic> newValue) {
+    print('update!');
+    final Map<String, dynamic> newObject = {
+      ...data,
+      ...newValue,
+    };
+    print(newObject);
+    LocalStorage.write(newObject);
     return LocalStorageState(
-      selectedTabIndex: selectedTabIndex,
+      data: newObject
     );
+  }
+
+  Future<LocalStorageState> load_() async {
+    print('load!!!');
+    final Map<String, dynamic> localData = await LocalStorage.read();
+    print(localData);
+    return LocalStorageState(data: localData);
+  }
+
+  LocalStorageState load(Map<String, dynamic> localData) {
+    return LocalStorageState(data: localData);
+  }
+
+  LocalStorageState copyWith({ Map<String, dynamic>? data }) {
+    print(data);
+    return LocalStorageState( data: data ?? this.data);
   }
 
 }
