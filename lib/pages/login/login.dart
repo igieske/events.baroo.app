@@ -17,8 +17,8 @@ class _LoginPageState extends State<LoginPage> {
 
   final _loginFormKey = GlobalKey<FormState>();
   bool formIsLoading = false;
-  final TextEditingController _usernameCtrl = TextEditingController(text: 'igieske@yandex.ru');
-  final TextEditingController _passwordCtrl = TextEditingController(text: 'qwerty123');
+  final TextEditingController _usernameCtrl = TextEditingController(text: 'igoza99@gmail.com');
+  final TextEditingController _passwordCtrl = TextEditingController(text: 'JS5sU*cgbg6vYl0h1GqOoBHk');
 
   @override
   Widget build(BuildContext context) {
