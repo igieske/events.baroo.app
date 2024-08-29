@@ -74,7 +74,15 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       }
                     },
                     child: const Text('login')
-                )
+                ),
+
+                if (userIsLoggedIn) FilledButton(
+                    onPressed: () async {
+                      context.pushNamed('add_case');
+                    },
+                    child: const Text('add case'),
+                ),
+
               ],
             ),
           ),

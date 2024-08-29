@@ -1,4 +1,3 @@
-import 'package:baroo/services/local_storage/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +8,8 @@ import 'package:baroo/pages/search/search.dart';
 import 'package:baroo/pages/home/home.dart';
 import 'package:baroo/pages/cases.dart';
 import 'package:baroo/pages/bars.dart';
+import 'package:baroo/pages/dashboard/add_case.dart';
+
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
@@ -56,6 +57,13 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => SearchPage(
         args: state.extra as Map<String, dynamic>,
       ),
+    ),
+
+    // login
+    GoRoute(
+      path: '/add_case',
+      name: 'add_case',
+      builder: (context, state) => const AddCasePage(),
     ),
 
   ],
