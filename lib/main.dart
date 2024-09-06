@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:baroo/layout/scaffold/scaffold_bloc.dart';
+import 'package:baroo/services/dict/dict_cubit.dart';
 import 'package:baroo/services/local_storage/local_storage_bloc.dart';
 
 import 'router.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => scaffoldBloc),
         BlocProvider(create: (context) => localStorageBloc),
+        BlocProvider(create: (context) => DictCubit()..loadDictionaries(['all'])),
       ],
       child: MaterialApp.router(
         title: 'Baroo',
