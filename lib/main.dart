@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
+import 'package:baroo/layout/bric.dart';
 import 'package:baroo/layout/scaffold/scaffold_bloc.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
 import 'package:baroo/services/local_storage/local_storage_bloc.dart';
@@ -52,15 +52,6 @@ class MyApp extends StatelessWidget {
           Locale('ru', 'RU'),
           Locale('en', 'US'),
         ],
-        builder: (context, child) => ResponsiveBreakpoints.builder(
-          child: child!,
-          breakpoints: [
-            const Breakpoint(start: 0, end: 450, name: MOBILE),
-            const Breakpoint(start: 451, end: 840, name: TABLET),
-            const Breakpoint(start: 841, end: 1920, name: DESKTOP),
-            const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-          ],
-        ),
       ),
     );
   }
