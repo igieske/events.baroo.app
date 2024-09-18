@@ -46,7 +46,7 @@ class Brics extends StatelessWidget {
     this.crossGap = 0,
     this.maxWidth,
     this.padding = EdgeInsets.zero,
-    this.alignment = Alignment.center,
+    this.alignment = Alignment.topCenter,
   });
 
   @override
