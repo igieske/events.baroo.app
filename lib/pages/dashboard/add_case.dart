@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
+import 'package:baroo/layout/bric.dart';
 import 'package:baroo/models/bar.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
 
@@ -20,8 +19,10 @@ class _AddCasePageState extends State<AddCasePage> {
 
   GlobalKey addCaseFormKey = GlobalKey();
 
-  final TextEditingController _barCtrl = TextEditingController();
   final TextEditingController _dateCtrl = TextEditingController();
+  final TextEditingController _timeEntryCtrl = TextEditingController();
+  final TextEditingController _timeStartCtrl = TextEditingController();
+  final TextEditingController _placeDetailsCtrl = TextEditingController();
 
   @override
   void initState() {
@@ -43,107 +44,103 @@ class _AddCasePageState extends State<AddCasePage> {
             return const Center(child: CircularProgressIndicator());
           } else if (dict is Dict) {
 
-            return Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                color: Colors.white,
-                constraints: const BoxConstraints(maxWidth: 840),
-                padding: ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET)
-                    ? const EdgeInsets.symmetric(horizontal: 16) : null,
-                child: Form(
-                  key: addCaseFormKey,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      return Wrap(
-                        spacing: 16,
-                        runSpacing: 16,
-                        children: [
+            return Form(
+              key: addCaseFormKey,
+              child: Brics(
+                gap: 16,
+                crossGap: 16,
+                maxWidth: 840 - 16 * 2,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: [
 
-                          ResponsiveRowColumnItem(
-                            child: SizedBox(
-                              width: ResponsiveValue(
-                                context,
-                                defaultValue: constraints.maxHeight,
-                                conditionalValues: [
-                                  Condition.equals(
-                                    name: MOBILE,
-                                    value: constraints.maxHeight,
-                                  ),
-                                  Condition.equals(
-                                    name: TABLET,
-                                    value: constraints.maxHeight / 2,
-                                  ),
-                                  Condition.largerThan(
-                                    name: TABLET,
-                                    value: constraints.maxHeight / 3,
-                                  ),
-                                ],
-                              ).value,
-                              child: Autocomplete<Bar>(
-                                optionsBuilder: (TextEditingValue textEditingValue) {
-                                  if (textEditingValue.text.length < 2) {
-                                    return const Iterable<Bar>.empty();
-                                  }
-                                  return dict.bars.where((bar) => bar.name.toLowerCase().contains(textEditingValue.text.toLowerCase()));
-                                },
-                                displayStringForOption: (Bar bar) => bar.name,
-                                onSelected: (Bar selection) {
-                                  print('Выбрано: ${selection.name}, ID: ${selection.id}');
-                                },
-                                fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
-                                  return TextField(
-                                    controller: textEditingController,
-                                    focusNode: focusNode,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Введите имя бара',
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-
-                          ResponsiveRowColumnItem(
-                            child: SizedBox(
-                              width: ResponsiveValue(
-                                context,
-                                defaultValue: constraints.maxHeight,
-                                conditionalValues: [
-                                  Condition.equals(
-                                    name: MOBILE,
-                                    value: constraints.maxHeight,
-                                  ),
-                                  Condition.equals(
-                                    name: TABLET,
-                                    value: constraints.maxHeight / 2,
-                                  ),
-                                  Condition.largerThan(
-                                    name: TABLET,
-                                    value: constraints.maxHeight / 3,
-                                  ),
-                                ],
-                              ).value,
-                              child: TextFormField(
-                                controller: _barCtrl,
-                                decoration: const InputDecoration(
-                                  label: Text('Уточнение о месте проведения'),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.trim().isEmpty) {
-                                    return 'Please enter username or email';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          ),
-
-
-                        ],
-                      );
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
                     },
+                    child: Autocomplete<Bar>(
+                      optionsBuilder: (TextEditingValue textEditingValue) {
+                        if (textEditingValue.text.length < 2) {
+                          return const Iterable<Bar>.empty();
+                        }
+                        return dict.bars.where((bar) => bar.name.toLowerCase().contains(textEditingValue.text.toLowerCase()));
+                      },
+                      displayStringForOption: (Bar bar) => bar.name,
+                      onSelected: (Bar selection) {
+                        print('Выбрано: ${selection.name}, ID: ${selection.id}');
+                      },
+                      fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+                        return TextField(
+                          controller: textEditingController,
+                          focusNode: focusNode,
+                          decoration: const InputDecoration(
+                            hintText: 'Место',
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
+
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
+                    },
+                    child: TextFormField(
+                      controller: _dateCtrl,
+                      decoration: const InputDecoration(
+                        label: Text('Дата'),
+                      ),
+                      validator: (value) {
+                        if ((value?.trim().isEmpty ?? '') == '') {
+                          return 'Укажите дату';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
+                    },
+                    child: TextFormField(
+                      controller: _timeEntryCtrl,
+                      decoration: const InputDecoration(
+                        label: Text('Время (двери)'),
+                      ),
+                    ),
+                  ),
+
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
+                    },
+                    child: TextFormField(
+                      controller: _timeStartCtrl,
+                      decoration: const InputDecoration(
+                        label: Text('Время (начало)'),
+                      ),
+                      validator: (value) {
+                        if ((value?.trim().isEmpty ?? '') == '') {
+                          return 'Укажите время начала';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
+                    },
+                    child: TextFormField(
+                      controller: _placeDetailsCtrl,
+                      decoration: const InputDecoration(
+                        label: Text('Уточнение о месте проведения'),
+                      ),
+                    ),
+                  ),
+
+                ],
               ),
             );
 
