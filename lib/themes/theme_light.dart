@@ -23,4 +23,9 @@ ThemeData appThemeLight = ThemeData(
     onError: Colors.pink,
   ),
 
+  inputDecorationTheme: const InputDecorationTheme(
+    fillColor: Colors.white,
+    filled: true,
+  ),
+
 );
