@@ -3,32 +3,48 @@ import 'package:flutter/material.dart';
 
 enum BrickWidth { xs, sm, md, lg, xl, xxl }
 
+// верхние границы диапазонов
+const defaultBricsBreakpoints = BricsBreakpointsConfig(
+  xs: 576,
+  sm: 768,
+  md: 992,
+  lg: 1200,
+  xl: 1400,
+);
+
+class BricsBreakpointsConfig {
+  final int xs;
+  final int sm;
+  final int md;
+  final int lg;
+  final int xl;
+  const BricsBreakpointsConfig({
+    required this.xs,
+    required this.sm,
+    required this.md,
+    required this.lg,
+    required this.xl,
+  });
+}
+
 class BricsConfig extends InheritedWidget {
-  final Map<BrickWidth, double> breakpoints;
+  final BricsBreakpointsConfig breakpoints;
   final int totalColumns;
 
   const BricsConfig({
     super.key,
-    required super.child,
-    this.breakpoints = const {
-      BrickWidth.xs: 576,
-      BrickWidth.sm: 768,
-      BrickWidth.md: 992,
-      BrickWidth.lg: 1200,
-      BrickWidth.xl: 1400,
-      BrickWidth.xxl: 1600,
-    },
+    Widget? child,
     this.totalColumns = 12,
-  });
+    this.breakpoints = defaultBricsBreakpoints,
+  }) : super(child: child ?? const SizedBox.shrink());
 
   static BricsConfig of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<BricsConfig>()!;
+    return context.dependOnInheritedWidgetOfExactType<BricsConfig>()
+        ?? const BricsConfig();
   }
 
   @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    return true;
-  }
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
 }
 
 class Brics extends StatelessWidget {
@@ -84,20 +100,20 @@ class Bric extends StatelessWidget {
     this.size = const {},
   });
 
-  int _getColumnCount(double width, int totalColumns, Map<BrickWidth, double> breakpoints) {
-    if (width < breakpoints[BrickWidth.xs]!) {
+  int _getColumnCount(double width, int totalColumns, BricsBreakpointsConfig breakpoints) {
+    if (width < breakpoints.xs) {
       return size[BrickWidth.xs] ?? totalColumns;
     }
-    if (width < breakpoints[BrickWidth.sm]!) {
+    if (width < breakpoints.sm) {
       return size[BrickWidth.sm] ?? size[BrickWidth.xs] ?? totalColumns;
     }
-    if (width < breakpoints[BrickWidth.md]!) {
+    if (width < breakpoints.md) {
       return size[BrickWidth.md] ?? size[BrickWidth.sm] ?? size[BrickWidth.xs] ?? totalColumns;
     }
-    if (width < breakpoints[BrickWidth.lg]!) {
+    if (width < breakpoints.lg) {
       return size[BrickWidth.lg] ?? size[BrickWidth.md] ?? size[BrickWidth.sm] ?? size[BrickWidth.xs] ?? totalColumns;
     }
-    if (width < breakpoints[BrickWidth.xl]!) {
+    if (width < breakpoints.xl) {
       return size[BrickWidth.xl] ?? size[BrickWidth.lg] ?? size[BrickWidth.md] ?? size[BrickWidth.sm] ?? size[BrickWidth.xs] ?? totalColumns;
     }
     return size[BrickWidth.xxl] ?? size[BrickWidth.xl] ?? size[BrickWidth.lg] ?? size[BrickWidth.md] ?? size[BrickWidth.sm] ?? size[BrickWidth.xs] ?? totalColumns;
