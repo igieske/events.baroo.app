@@ -8,6 +8,7 @@ import 'package:baroo/services/dict/dict_cubit.dart';
 import 'package:baroo/services/local_storage/local_storage_bloc.dart';
 
 import 'router.dart';
+import 'themes/theme.dart';
 
 
 void main() async {
@@ -37,10 +38,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'Baroo',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        theme: AppThemes.appThemeData[AppTheme.light],
         routerConfig: appRouter,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
