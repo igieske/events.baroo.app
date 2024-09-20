@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:baroo/layout/bric.dart';
 import 'package:baroo/models/bar.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
+import 'package:baroo/services/time_formatter.dart';
 
 
 class AddCasePage extends StatefulWidget {
@@ -138,6 +139,7 @@ class _AddCasePageState extends State<AddCasePage> {
                     child: TextFormField(
                       controller: _dateCtrl,
                       decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.calendar_month),
                         label: Text('Дата'),
                       ),
                       validator: (value) {
@@ -156,8 +158,14 @@ class _AddCasePageState extends State<AddCasePage> {
                     child: TextFormField(
                       controller: _timeEntryCtrl,
                       decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.access_time),
                         label: Text('Время (двери)'),
+                        counterText: '',
                       ),
+                      maxLength: 5,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [TimeTextFormatter()],
+                      validator: (value) => timeTextValidator(value),
                     ),
                   ),
 
@@ -168,14 +176,14 @@ class _AddCasePageState extends State<AddCasePage> {
                     child: TextFormField(
                       controller: _timeStartCtrl,
                       decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.access_time),
                         label: Text('Время (начало)'),
+                        counterText: '',
                       ),
-                      validator: (value) {
-                        if ((value?.trim().isEmpty ?? '') == '') {
-                          return 'Укажите время начала';
-                        }
-                        return null;
-                      },
+                      maxLength: 5,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [TimeTextFormatter()],
+                      validator: (value) => timeTextValidator(value),
                     ),
                   ),
 
