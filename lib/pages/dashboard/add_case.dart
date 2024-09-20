@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:baroo/layout/bric.dart';
@@ -57,27 +58,55 @@ class _AddCasePageState extends State<AddCasePage> {
                     size: const {
                       BrickWidth.sm: 6,
                     },
-                    child: Autocomplete<Bar>(
-                      optionsBuilder: (TextEditingValue textEditingValue) {
-                        if (textEditingValue.text.length < 2) {
-                          return const Iterable<Bar>.empty();
-                        }
-                        return dict.bars.where((bar) => bar.name.toLowerCase().contains(textEditingValue.text.toLowerCase()));
-                      },
-                      displayStringForOption: (Bar bar) => bar.name,
-                      onSelected: (Bar selection) {
-                        print('Выбрано: ${selection.name}, ID: ${selection.id}');
-                      },
-                      fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
-                        return TextField(
-                          controller: textEditingController,
-                          focusNode: focusNode,
-                          decoration: const InputDecoration(
-                            hintText: 'Место',
-                          ),
-                        );
-                      },
-                    ),
+                    builder: (context, bricWidth) {
+                      return Autocomplete<Bar>(
+                        fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+                          return TextField(
+                            controller: controller,
+                            focusNode: focusNode,
+                            decoration: const InputDecoration(
+                              hintText: 'Место',
+                            ),
+                          );
+                        },
+                        optionsBuilder: (TextEditingValue textEditingValue) {
+                          if (textEditingValue.text.length < 2) {
+                            return const Iterable<Bar>.empty();
+                          }
+                          return dict.bars.where((bar) => bar.name.toLowerCase()
+                              .contains(textEditingValue.text.toLowerCase()));
+                        },
+                        displayStringForOption: (Bar bar) => bar.name,
+                        onSelected: (Bar selection) {
+                          print('Выбрано: ${selection.name}, ID: ${selection.id}');
+                        },
+                        optionsViewBuilder: (context, onSelected, options) {
+                          return Align(
+                            alignment: Alignment.topLeft,
+                            child: Material(
+                              elevation: 4.0,
+                              child: SizedBox(
+                                width: bricWidth,
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  itemCount: options.length,
+                                  itemBuilder: (context, index) {
+                                    final Bar option = options.elementAt(index);
+                                    return ListTile(
+                                      title: Text(option.name),
+                                      onTap: () {
+                                        onSelected(option);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
 
                   Bric(
