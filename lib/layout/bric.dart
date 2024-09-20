@@ -89,16 +89,20 @@ class Brics extends StatelessWidget {
   }
 }
 
+// bric builder: send width to builder arguments
+typedef BricBuilder = Widget Function(BuildContext context, double width);
 
 class Bric extends StatelessWidget {
   final Map<BrickWidth, int> size;
-  final Widget child;
+  final Widget? child;
+  final BricBuilder? builder;
 
   const Bric({
     super.key,
-    required this.child,
+    this.child,
+    this.builder,
     this.size = const {},
-  });
+  }) : assert(child != null || builder != null, 'Either child or builder must be provided.');
 
   int _getColumnCount(double width, int totalColumns, BricsBreakpointsConfig breakpoints) {
     if (width < breakpoints.xs) {
@@ -129,21 +133,15 @@ class Bric extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Получаем значения отступов (gap) и общего количества колонок
         final gap = brics?.gap ?? 0;
         final totalColumns = config.totalColumns;
-        // Ширина одной колонки с учётом промежутков между колонками
         final columnWidth = (constraints.maxWidth - gap * (totalColumns - 1)) / totalColumns;
-        // Ширина текущего Bric с учётом количества колонок и отступов
         final bricWidth = columnCount * columnWidth + (columnCount - 1) * gap;
-        // Корректное отображение для пустого контейнера
-        if (bricWidth <= 0) {
-          return const SizedBox.shrink();
-        }
 
         return SizedBox(
           width: bricWidth,
-          child: child,
+          // return builder or child
+          child: builder != null ? builder!(context, bricWidth) : child,
         );
       },
     );
