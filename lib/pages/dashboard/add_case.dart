@@ -60,15 +60,7 @@ class _AddCasePageState extends State<AddCasePage> {
                     },
                     builder: (context, bricWidth) {
                       return Autocomplete<Bar>(
-                        fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
-                          return TextField(
-                            controller: controller,
-                            focusNode: focusNode,
-                            decoration: const InputDecoration(
-                              hintText: 'Место',
-                            ),
-                          );
-                        },
+                        displayStringForOption: (Bar bar) => bar.name,
                         optionsBuilder: (TextEditingValue textEditingValue) {
                           if (textEditingValue.text.length < 2) {
                             return const Iterable<Bar>.empty();
@@ -76,28 +68,42 @@ class _AddCasePageState extends State<AddCasePage> {
                           return dict.bars.where((bar) => bar.name.toLowerCase()
                               .contains(textEditingValue.text.toLowerCase()));
                         },
-                        displayStringForOption: (Bar bar) => bar.name,
-                        onSelected: (Bar selection) {
-                          print('Выбрано: ${selection.name}, ID: ${selection.id}');
-                        },
-                        optionsViewBuilder: (context, onSelected, options) {
+                        optionsViewBuilder: (BuildContext context,
+                            AutocompleteOnSelected<Bar> onSelected,
+                            Iterable<Bar> options) {
                           return Align(
                             alignment: Alignment.topLeft,
                             child: Material(
                               elevation: 4.0,
-                              child: SizedBox(
-                                width: bricWidth,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(maxWidth: bricWidth),
                                 child: ListView.builder(
                                   padding: EdgeInsets.zero,
                                   shrinkWrap: true,
                                   itemCount: options.length,
-                                  itemBuilder: (context, index) {
-                                    final Bar option = options.elementAt(index);
-                                    return ListTile(
-                                      title: Text(option.name),
+                                  itemBuilder: (BuildContext context, int index) {
+                                    final Bar bar = options.elementAt(index);
+                                    return InkWell(
                                       onTap: () {
-                                        onSelected(option);
+                                        onSelected(bar);
                                       },
+                                      child: Builder(
+                                        builder: (BuildContext context) {
+                                          final bool highlight = AutocompleteHighlightedOption.of(context) == index;
+                                          if (highlight) {
+                                            SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
+                                              Scrollable.ensureVisible(context, alignment: 0.5);
+                                            });
+                                          }
+                                          return Container(
+                                            color: highlight ? Theme.of(context).focusColor : null,
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Text(
+                                              RawAutocomplete.defaultStringForOption(bar.name),
+                                            ),
+                                          );
+                                        }
+                                      ),
                                     );
                                   },
                                 ),
@@ -105,6 +111,22 @@ class _AddCasePageState extends State<AddCasePage> {
                             ),
                           );
                         },
+                        fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+                          return TextField(
+                            controller: controller,
+                            focusNode: focusNode,
+                            decoration: const InputDecoration(
+                              hintText: 'Место',
+                            ),
+                            onSubmitted: (value) {
+                              onFieldSubmitted();
+                            },
+                          );
+                        },
+                        onSelected: (Bar selection) {
+                          print('Выбрано: ${selection.name}, ID: ${selection.id}');
+                        },
+
                       );
                     },
                   ),
