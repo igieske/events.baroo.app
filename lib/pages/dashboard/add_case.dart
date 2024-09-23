@@ -26,6 +26,8 @@ class _AddCasePageState extends State<AddCasePage> {
   final TextEditingController _timeStartCtrl = TextEditingController();
   final TextEditingController _placeDetailsCtrl = TextEditingController();
 
+  final TextEditingController _shortDescriptionCtrl = TextEditingController();
+
   @override
   void initState() {
     dict = context.read<DictCubit>();
@@ -54,6 +56,15 @@ class _AddCasePageState extends State<AddCasePage> {
                 maxWidth: 840 - 16 * 2,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
+
+                  Container(
+                    padding: const EdgeInsets.only(top: 20),
+                    width: double.infinity,
+                    child: Text(
+                      'Место и время',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
 
                   Bric(
                     size: const {
@@ -196,6 +207,28 @@ class _AddCasePageState extends State<AddCasePage> {
                       decoration: const InputDecoration(
                         label: Text('Уточнение о месте проведения'),
                       ),
+                    ),
+                  ),
+
+                  Container(
+                    padding: const EdgeInsets.only(top: 20),
+                    width: double.infinity,
+                    child: Text(
+                      'Основная информация',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
+
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
+                    },
+                    child: TextFormField(
+                      controller: _shortDescriptionCtrl,
+                      decoration: const InputDecoration(
+                        label: Text('Краткое описание'),
+                      ),
+                      maxLength: 150,
                     ),
                   ),
 
