@@ -26,6 +26,7 @@ class _AddCasePageState extends State<AddCasePage> {
   final TextEditingController _timeStartCtrl = TextEditingController();
   final TextEditingController _placeDetailsCtrl = TextEditingController();
 
+  final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _shortDescriptionCtrl = TextEditingController();
 
   @override
@@ -216,6 +217,19 @@ class _AddCasePageState extends State<AddCasePage> {
                     child: Text(
                       'Основная информация',
                       style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
+
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
+                    },
+                    child: TextFormField(
+                      controller: _titleCtrl,
+                      decoration: const InputDecoration(
+                        label: Text('Название события'),
+                      ),
+                      maxLength: 150,
                     ),
                   ),
 
