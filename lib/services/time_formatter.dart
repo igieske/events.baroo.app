@@ -4,20 +4,22 @@ import 'package:flutter/services.dart';
 class TimeTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    //this fixes backspace bug
+    // accept only numbers
+    String filteredText = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+    // fix backspace bug
     if (oldValue.text.length >= newValue.text.length) {
-      return newValue;
+      return newValue.copyWith(text: filteredText, selection: updateCursorPosition(filteredText));
     }
-    var dateText = _addSeperators(newValue.text, ':');
+    final dateText = _addSeparators(filteredText, ':');
     return newValue.copyWith(text: dateText, selection: updateCursorPosition(dateText));
   }
-  String _addSeperators(String value, String seperator) {
+  String _addSeparators(String value, String separator) {
     value = value.replaceAll(':', '');
     var newString = '';
     for (int i = 0; i < value.length; i++) {
       newString += value[i];
       if (i == 1) {
-        newString += seperator;
+        newString += separator;
       }
     }
     return newString;
