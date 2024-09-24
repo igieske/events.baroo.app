@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import 'package:baroo/layout/bric.dart';
@@ -37,6 +40,10 @@ class _AddCasePageState extends State<AddCasePage> {
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _shortDescriptionCtrl = TextEditingController();
   final TextEditingController _sourcesCtrl = TextEditingController();
+
+  XFile? poster;
+  final ImagePicker picker = ImagePicker();
+
 
   @override
   void initState() {
@@ -358,6 +365,35 @@ class _AddCasePageState extends State<AddCasePage> {
                       maxLines: 5,
                       clipBehavior: Clip.hardEdge,
                       keyboardType: TextInputType.url,
+                    ),
+                  ),
+
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
+                    },
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () async {
+                          poster = await picker.pickImage(source: ImageSource.gallery);
+                          setState(() { });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          clipBehavior: Clip.hardEdge,
+                          child: Center(
+                            child: poster == null
+                              ? const Text('Выбрать')
+                              : kIsWeb
+                                ? Image.network(poster!.path)
+                                : Image.file(File(poster!.path)),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
 
