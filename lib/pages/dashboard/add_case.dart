@@ -3,6 +3,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:baroo/layout/bric.dart';
+import 'package:baroo/layout/chiper.dart';
+import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/bar.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
 import 'package:baroo/services/time_formatter.dart';
@@ -25,6 +27,9 @@ class _AddCasePageState extends State<AddCasePage> {
   final TextEditingController _timeEntryCtrl = TextEditingController();
   final TextEditingController _timeStartCtrl = TextEditingController();
   final TextEditingController _placeDetailsCtrl = TextEditingController();
+  final TextEditingController _caseTypeCtrl = TextEditingController();
+
+  List<CaseType> caseTypes = [];
 
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _shortDescriptionCtrl = TextEditingController();
@@ -208,6 +213,76 @@ class _AddCasePageState extends State<AddCasePage> {
                       decoration: const InputDecoration(
                         label: Text('Уточнение о месте проведения'),
                       ),
+                    ),
+                  ),
+
+                  const Bric(
+                    size: {
+                      BrickWidth.sm: 6,
+                    },
+                    child: Chiper(
+                        children: ['Живая музыка'],
+                    ),
+                  ),
+
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
+                    },
+                    child: TextFormField(
+                      controller: _caseTypeCtrl,
+                      decoration: const InputDecoration(
+                        label: Text('Тип события'),
+                        suffixIcon: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: Icon(Icons.list)
+                        ),
+                      ),
+                      mouseCursor: SystemMouseCursors.click,
+                      canRequestFocus: false,
+                      readOnly: true,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext  context) {
+                            return StatefulBuilder(
+                              builder: (BuildContext context, StateSetter setState) {
+                                return AlertDialog(
+                                  title: const Text('Тип события'),
+                                  content: SingleChildScrollView(
+                                    child: ListBody(
+                                      children: dict.caseTypes.map((caseType) {
+                                        return FilterChip(
+                                          label: Text(caseType.name),
+                                          selected: caseTypes.contains(caseType),
+                                          onSelected: (bool selected) {
+                                            setState(() {
+                                              if (selected) {
+                                                caseTypes.add(caseType);
+                                              } else {
+                                                caseTypes.remove(caseType);
+                                              }
+                                              _caseTypeCtrl.text = caseTypes.map((caseType) => caseType.name).join(', ');
+                                            });
+                                          },
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                  actions: [
+                                    FilledButton(
+                                      child: const Text('ОК'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
 
