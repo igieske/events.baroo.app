@@ -9,6 +9,7 @@ import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/bar.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
 import 'package:baroo/services/time_formatter.dart';
+import 'package:baroo/services/date_formatter.dart';
 
 
 class AddCasePage extends StatefulWidget {
@@ -164,12 +165,7 @@ class _AddCasePageState extends State<AddCasePage> {
                         ),
                         label: Text('Дата'),
                       ),
-                      validator: (value) {
-                        if ((value?.trim().isEmpty ?? '') == '') {
-                          return 'Укажите дату';
-                        }
-                        return null;
-                      },
+                      validator: (value) => dateTextValidator(value),
                       mouseCursor: SystemMouseCursors.click,
                       canRequestFocus: false,
                       onTap: () async {
