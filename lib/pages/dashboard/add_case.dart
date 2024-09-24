@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import 'package:baroo/layout/bric.dart';
 import 'package:baroo/layout/chiper.dart';
@@ -29,6 +30,7 @@ class _AddCasePageState extends State<AddCasePage> {
   final TextEditingController _placeDetailsCtrl = TextEditingController();
   final TextEditingController _caseTypeCtrl = TextEditingController();
 
+  DateTime? _date;
   List<CaseType> caseTypes = [];
 
   final TextEditingController _titleCtrl = TextEditingController();
@@ -156,7 +158,10 @@ class _AddCasePageState extends State<AddCasePage> {
                     child: TextFormField(
                       controller: _dateCtrl,
                       decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.calendar_month),
+                        prefixIcon: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: Icon(Icons.calendar_month),
+                        ),
                         label: Text('Дата'),
                       ),
                       validator: (value) {
@@ -164,6 +169,28 @@ class _AddCasePageState extends State<AddCasePage> {
                           return 'Укажите дату';
                         }
                         return null;
+                      },
+                      mouseCursor: SystemMouseCursors.click,
+                      canRequestFocus: false,
+                      onTap: () async {
+                        final DateTime today = DateTime.now().copyWith(
+                          hour: 0,
+                          minute: 0,
+                          second: 0,
+                          millisecond: 0,
+                          microsecond: 0,
+                        );
+                        DateTime? datePickerResult = await showDatePicker(
+                          context: context,
+                          initialDate: _date,
+                          locale: const Locale('ru'),
+                          firstDate: today,
+                          lastDate: today.add(const Duration(days: 365)),
+                        );
+                        if (datePickerResult != null) {
+                          _date = datePickerResult;
+                          _dateCtrl.text = DateFormat('dd.MM.yyyy').format(datePickerResult);
+                        }
                       },
                     ),
                   ),
@@ -240,7 +267,6 @@ class _AddCasePageState extends State<AddCasePage> {
                       ),
                       mouseCursor: SystemMouseCursors.click,
                       canRequestFocus: false,
-                      readOnly: true,
                       onTap: () {
                         showDialog(
                           context: context,
@@ -262,8 +288,8 @@ class _AddCasePageState extends State<AddCasePage> {
                                               } else {
                                                 caseTypes.remove(caseType);
                                               }
-                                              _caseTypeCtrl.text = caseTypes.map((caseType) => caseType.name).join(', ');
                                             });
+                                            _caseTypeCtrl.text = caseTypes.map((caseType) => caseType.name).join(', ');
                                           },
                                         );
                                       }).toList(),
