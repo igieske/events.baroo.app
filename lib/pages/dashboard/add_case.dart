@@ -36,6 +36,7 @@ class _AddCasePageState extends State<AddCasePage> {
 
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _shortDescriptionCtrl = TextEditingController();
+  final TextEditingController _sourcesCtrl = TextEditingController();
 
   @override
   void initState() {
@@ -340,6 +341,23 @@ class _AddCasePageState extends State<AddCasePage> {
                         label: Text('Краткое описание'),
                       ),
                       maxLength: 150,
+                    ),
+                  ),
+
+                  Bric(
+                    size: const {
+                      BrickWidth.sm: 6,
+                    },
+                    child: TextFormField(
+                      controller: _sourcesCtrl,
+                      decoration: const InputDecoration(
+                        label: Text('Источники'),
+                        hintText: 'По одной ссылке в строке',
+                      ),
+                      minLines: 1,
+                      maxLines: 5,
+                      clipBehavior: Clip.hardEdge,
+                      keyboardType: TextInputType.url,
                     ),
                   ),
 
