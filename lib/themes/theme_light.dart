@@ -12,12 +12,10 @@ ThemeData appThemeLight = ThemeData(
     onSurface: Color(0xFF222222),
     // ссылки
     primary: Color(0xFF168ACD),
+    onPrimary: Colors.white,
     // второстепенный
     secondary: Color(0xFFA0ACB6),
     onSecondary: Colors.white,
-
-    // хз
-    onPrimary: Colors.red,
 
     error: Colors.purple,
     onError: Colors.pink,
