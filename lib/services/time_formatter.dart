@@ -8,7 +8,7 @@ class TimeTextFormatter extends TextInputFormatter {
     String filteredText = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
     // fix backspace bug
     if (oldValue.text.length >= newValue.text.length) {
-      return newValue.copyWith(text: filteredText, selection: updateCursorPosition(filteredText));
+      return newValue;
     }
     final dateText = _addSeparators(filteredText, ':');
     return newValue.copyWith(text: dateText, selection: updateCursorPosition(dateText));
