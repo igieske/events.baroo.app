@@ -1,53 +1,85 @@
 import 'package:flutter/material.dart';
 
+class Chiper extends StatefulWidget {
+  final String labelText;
+  final List<String> options;
+  final List<String> value;
+  final ValueChanged<List<String>> onChanged;
 
-class Chiper extends StatelessWidget {
-  final List<String> children;
-  const Chiper({super.key, required this.children});
+  const Chiper({
+    super.key,
+    required this.labelText,
+    required this.options,
+    required this.value,
+    required this.onChanged,
+  });
 
+  @override
+  State<Chiper> createState() => _ChiperState();
+}
+
+class _ChiperState extends State<Chiper> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('AlertDialog Title'),
-                content: const SingleChildScrollView(
-                  child: ListBody(
-                    children: [],
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Approve'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            }
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5),
+        onTap: () => _showOptionsDialog(context),
+        child: InputDecorator(
+          decoration: InputDecoration(
+            labelText: widget.labelText,
           ),
-          padding: const EdgeInsets.all(3),
+          isEmpty: widget.value.isEmpty,
           child: Wrap(
-            children: children.map((String value) {
-              return ChiperItem(
-                value: value,
-              );
-            }).toList(),
+            spacing: 6,
+            runSpacing: 6,
+            children: widget.value
+                .map((selectedOption) => ChiperItem(value: selectedOption))
+                .toList(),
           ),
         ),
       ),
+    );
+  }
+
+  void _showOptionsDialog(BuildContext context) {
+    List<String> selectedOptions = List.from(widget.value);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(widget.labelText),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: widget.options.map((option) {
+                    return FilterChip(
+                      label: Text(option),
+                      selected: selectedOptions.contains(option),
+                      onSelected: (isSelected) {
+                        setState(() {
+                          isSelected
+                              ? selectedOptions.add(option)
+                              : selectedOptions.remove(option);
+                        });
+                        widget.onChanged(selectedOptions);
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
+              actions: [
+                FilledButton(
+                  child: const Text('ОК'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -62,12 +94,13 @@ class ChiperItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(3),
+        borderRadius: BorderRadius.circular(4),
       ),
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.all(3),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 1
+      ),
       child: Text(value),
     );
   }
 }
-

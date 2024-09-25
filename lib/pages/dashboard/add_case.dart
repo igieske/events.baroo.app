@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 
 import 'package:baroo/layout/bric.dart';
 import 'package:baroo/layout/chiper.dart';
@@ -248,15 +249,28 @@ class _AddCasePageState extends State<AddCasePage> {
                       ),
                     ),
               
-                    const Bric(
-                      size: {
+                    Bric(
+                      size: const {
                         BrickWidth.sm: 6,
                       },
                       child: Chiper(
-                          children: ['Живая музыка'],
+                        labelText: 'Тип события',
+                        options: dict.caseTypes.map((value) => value.name).toList(),
+                        value: caseTypes.map((value) => value.name).toList(),
+                        onChanged: (names) {
+                          setState(() {
+                            caseTypes = names.fold<List<CaseType>>([], (list, name) {
+                              final matchedType = dict.caseTypes.firstWhereOrNull((type) => type.name == name);
+                              if (matchedType != null) {
+                                list.add(matchedType);
+                              }
+                              return list;
+                            });
+                          });
+                        },
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 6,
