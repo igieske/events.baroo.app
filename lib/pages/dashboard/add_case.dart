@@ -271,66 +271,6 @@ class _AddCasePageState extends State<AddCasePage> {
                       ),
                     ),
 
-                    Bric(
-                      size: const {
-                        BrickWidth.sm: 6,
-                      },
-                      child: TextFormField(
-                        controller: _caseTypeCtrl,
-                        decoration: const InputDecoration(
-                          label: Text('Тип события'),
-                          suffixIcon: MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: Icon(Icons.list)
-                          ),
-                        ),
-                        mouseCursor: SystemMouseCursors.click,
-                        canRequestFocus: false,
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext  context) {
-                              return StatefulBuilder(
-                                builder: (BuildContext context, StateSetter setState) {
-                                  return AlertDialog(
-                                    title: const Text('Тип события'),
-                                    content: SingleChildScrollView(
-                                      child: ListBody(
-                                        children: dict.caseTypes.map((caseType) {
-                                          return FilterChip(
-                                            label: Text(caseType.name),
-                                            selected: caseTypes.contains(caseType),
-                                            onSelected: (bool selected) {
-                                              setState(() {
-                                                if (selected) {
-                                                  caseTypes.add(caseType);
-                                                } else {
-                                                  caseTypes.remove(caseType);
-                                                }
-                                              });
-                                              _caseTypeCtrl.text = caseTypes.map((caseType) => caseType.name).join(', ');
-                                            },
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                    actions: [
-                                      FilledButton(
-                                        child: const Text('ОК'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-              
                     Container(
                       padding: const EdgeInsets.only(top: 20),
                       width: double.infinity,
