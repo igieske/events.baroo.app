@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:baroo/models/bar.dart';
+import 'package:baroo/models/genre.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -27,6 +28,7 @@ class DictCubit extends Cubit<DictState> {
       final data = json.decode(responseString);
 
       List<Bar> bars = [];
+      List<Genre> genres = [];
       List<CaseType> caseTypes = [];
 
       for (final dict in data.entries) {
@@ -34,6 +36,11 @@ class DictCubit extends Cubit<DictState> {
           case 'bars':
             bars = (dict.value as List)
                 .map((bar) => Bar.fromJson(bar))
+                .toList();
+            break;
+          case 'genres':
+            genres = (dict.value as List)
+                .map((type) => Genre.fromJson(type))
                 .toList();
             break;
           case 'caseTypes':
@@ -47,8 +54,9 @@ class DictCubit extends Cubit<DictState> {
       }
 
       emit(Dict(
-          bars: bars,
-          caseTypes: caseTypes,
+        bars: bars,
+        genres: genres,
+        caseTypes: caseTypes,
       ));
     } catch (e) {
       print(e);

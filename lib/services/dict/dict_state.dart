@@ -9,10 +9,12 @@ final class DictLoading extends DictState {}
 
 final class Dict extends DictState {
   final List<Bar> bars;
+  final List<Genre> genres;
   final List<CaseType> caseTypes;
 
   Dict({
     required this.bars,
+    required this.genres,
     required this.caseTypes,
   });
 }
