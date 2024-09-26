@@ -11,6 +11,7 @@ import 'package:baroo/layout/bric.dart';
 import 'package:baroo/layout/chiper.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/bar.dart';
+import 'package:baroo/models/genre.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
 import 'package:baroo/services/time_formatter.dart';
 import 'package:baroo/services/date_formatter.dart';
@@ -33,10 +34,10 @@ class _AddCasePageState extends State<AddCasePage> {
   final TextEditingController _timeEntryCtrl = TextEditingController();
   final TextEditingController _timeStartCtrl = TextEditingController();
   final TextEditingController _placeDetailsCtrl = TextEditingController();
-  final TextEditingController _caseTypeCtrl = TextEditingController();
 
   DateTime? _date;
   List<CaseType> caseTypes = [];
+  List<Genre> genres = [];
 
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _shortDescriptionCtrl = TextEditingController();
@@ -255,15 +256,47 @@ class _AddCasePageState extends State<AddCasePage> {
                       },
                       child: Chiper(
                         labelText: 'Тип события',
-                        options: dict.caseTypes.map((value) => value.name).toList(),
-                        value: caseTypes.map((value) => value.name).toList(),
-                        onChanged: (names) {
+                        options: dict.caseTypes.map((caseType) => ChiperOption(
+                            value: caseType.slug,
+                            label: caseType.name,
+                        )).toList(),
+                        values: caseTypes.map((value) => value.slug).toList(),
+                        onChanged: (values) {
                           setState(() {
-                            caseTypes = names.fold<List<CaseType>>([], (list, name) {
-                              final matchedType = dict.caseTypes.firstWhereOrNull((type) => type.name == name);
-                              if (matchedType != null) {
-                                list.add(matchedType);
-                              }
+                            caseTypes = values.fold([], (list, value) {
+                              final matchedType = dict.caseTypes.firstWhereOrNull((item) => item.slug == value);
+                              if (matchedType != null) list.add(matchedType);
+                              return list;
+                            });
+                          });
+                        },
+                      ),
+                    ),
+
+                    Bric(
+                      size: const {
+                        BrickWidth.sm: 6,
+                      },
+                      child: Chiper(
+                        labelText: 'Жанры',
+                        options: dict.genres.map((genre) {
+                          return ChiperOption(
+                            value: genre.slug,
+                            label: genre.label,
+                            subOptions: genre.subgenres?.map((subgenre) {
+                              return ChiperOption(
+                                value: subgenre.slug,
+                                label: subgenre.label,
+                              );
+                            }).toList()
+                          );
+                        }).toList(),
+                        values: genres.map((value) => value.slug).toList(),
+                        onChanged: (values) {
+                          setState(() {
+                            genres = values.fold([], (list, value) {
+                              final matchedType = dict.genres.firstWhereOrNull((item) => item.slug == value);
+                              if (matchedType != null) list.add(matchedType);
                               return list;
                             });
                           });
