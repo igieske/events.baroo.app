@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class Chiper extends StatefulWidget {
   final String labelText;
-  final List<String> options;
-  final List<String> value;
+  final List<ChiperOption> options;
+  final List<String> values;
   final ValueChanged<List<String>> onChanged;
 
   const Chiper({
     super.key,
     required this.labelText,
     required this.options,
-    required this.value,
+    required this.values,
     required this.onChanged,
   });
 
@@ -29,13 +29,15 @@ class _ChiperState extends State<Chiper> {
           decoration: InputDecoration(
             labelText: widget.labelText,
           ),
-          isEmpty: widget.value.isEmpty,
+          isEmpty: widget.values.isEmpty,
           child: Wrap(
             spacing: 6,
             runSpacing: 6,
-            children: widget.value
-                .map((selectedOption) => ChiperItem(value: selectedOption))
-                .toList(),
+            children: widget.options.where((option) {
+              return widget.values.contains(option.value);
+            }).map((option) {
+              return ChiperItem(label: option.label);
+            }).toList(),
           ),
         ),
       ),
@@ -43,7 +45,7 @@ class _ChiperState extends State<Chiper> {
   }
 
   void _showOptionsDialog(BuildContext context) {
-    List<String> selectedOptions = List.from(widget.value);
+    final List<String> selectedValues = List.from(widget.values);
     showDialog(
       context: context,
       builder: (context) {
@@ -54,17 +56,18 @@ class _ChiperState extends State<Chiper> {
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: widget.options.map((option) {
                     return FilterChip(
-                      label: Text(option),
-                      selected: selectedOptions.contains(option),
+                      label: Text(option.label),
+                      selected: selectedValues.contains(option.value),
                       onSelected: (isSelected) {
                         setState(() {
                           isSelected
-                              ? selectedOptions.add(option)
-                              : selectedOptions.remove(option);
+                              ? selectedValues.add(option.value)
+                              : selectedValues.remove(option.value);
                         });
-                        widget.onChanged(selectedOptions);
+                        widget.onChanged(selectedValues);
                       },
                     );
                   }).toList(),
@@ -85,9 +88,9 @@ class _ChiperState extends State<Chiper> {
 }
 
 class ChiperItem extends StatelessWidget {
-  final String value;
+  final String label;
 
-  const ChiperItem({super.key, required this.value});
+  const ChiperItem({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +103,19 @@ class ChiperItem extends StatelessWidget {
         horizontal: 8,
         vertical: 1
       ),
-      child: Text(value),
+      child: Text(label),
     );
   }
+}
+
+class ChiperOption {
+  final String value;
+  final String label;
+  final List<ChiperOption>? subOptions;
+
+  ChiperOption({
+    required this.value,
+    required this.label,
+    this.subOptions,
+  });
 }
