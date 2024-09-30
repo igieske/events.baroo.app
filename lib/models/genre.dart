@@ -10,7 +10,7 @@ class Genre {
   });
 
   factory Genre.fromJson(Map<String, dynamic> json) {
-    final subgenresData = json['subgenres'] as List<dynamic>?;
+    final subgenresData = json['sub-genres'] as List<dynamic>?;
     final subgenres = subgenresData != null
         ? subgenresData.map((subgenre) => Subgenre.fromJson(subgenre)).toList()
         : <Subgenre>[];
