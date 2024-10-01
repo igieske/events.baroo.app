@@ -218,11 +218,15 @@ class _AddCasePageState extends State<AddCasePage> {
                         ),
                         maxLength: 5,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [TimeTextFormatter()],
+                        inputFormatters: [
+                          MaskedInputFormatter('##:##',
+                              allowedCharMatcher: RegExp(r'[0-9]')
+                          ),
+                        ],
                         validator: (value) => timeTextValidator(value),
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 6,
@@ -236,7 +240,11 @@ class _AddCasePageState extends State<AddCasePage> {
                         ),
                         maxLength: 5,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [TimeTextFormatter()],
+                        inputFormatters: [
+                          MaskedInputFormatter('##:##',
+                              allowedCharMatcher: RegExp(r'[0-9]')
+                          ),
+                        ],
                         validator: (value) => timeTextValidator(value),
                       ),
                     ),
