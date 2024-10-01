@@ -49,6 +49,7 @@ class _AddCasePageState extends State<AddCasePage> {
 
   int _entryFeeFrom = 0;
   final TextEditingController _entryFeePriceCtrl = TextEditingController();
+  final TextEditingController _entryFeeCommentCtrl = TextEditingController();
 
   final TextEditingController _ticketsLinkCtrl = TextEditingController();
 
@@ -506,6 +507,21 @@ class _AddCasePageState extends State<AddCasePage> {
                         clipBehavior: Clip.hardEdge,
                         keyboardType: TextInputType.url,
                         validator: urlValidator,
+                      ),
+                    ),
+
+                    Bric(
+                      size: const {
+                        BrickWidth.sm: 12,
+                      },
+                      child: TextFormField(
+                        controller: _entryFeeCommentCtrl,
+                        decoration: const InputDecoration(
+                          label: Text('Комментарий о входе'),
+                          prefixIcon: Icon(Icons.comment_outlined),
+                          helperText: 'Например, "вход любая бумажная купюра" / "рекомендованный донейшн 200 руб." / "обязательная регистрация"',
+                        ),
+                        maxLength: 70,
                       ),
                     ),
 
