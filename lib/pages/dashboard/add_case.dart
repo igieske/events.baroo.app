@@ -36,7 +36,7 @@ class _AddCasePageState extends State<AddCasePage> {
 
   DateTime? _date;
   List<CaseType> caseTypes = [];
-  List<String> genresValue = ['vocal'];
+  List<String> genresValue = [];
 
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _shortDescriptionCtrl = TextEditingController();
@@ -44,6 +44,9 @@ class _AddCasePageState extends State<AddCasePage> {
 
   XFile? poster;
   final ImagePicker picker = ImagePicker();
+
+  int _entryFeeFrom = 0;
+  final TextEditingController _entryFeePriceCtrl = TextEditingController();
 
 
   @override
@@ -375,6 +378,99 @@ class _AddCasePageState extends State<AddCasePage> {
                             ),
                           ),
                         ),
+                      ),
+                    ),
+
+                    Bric(
+                      size: const {
+                        BrickWidth.sm: 4,
+                      },
+                      child: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.attach_money),
+                          labelText: 'Стоимость входа',
+                          labelStyle: TextStyle(color: Colors.grey),
+                          counterText: '',
+                        ),
+                        // hint: const Text('Выберите время'),
+                        onChanged: (value) {
+                          setState(() {
+                            // _selectedTime = value!;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Укажите стоимость';
+                          }
+                          return null;
+                        },
+                        // value: 'Любое время',
+                        items: const [
+                          DropdownMenuItem(
+                            value: 'free',
+                            child: Text('FREE'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'charge',
+                            child: Text('Платный'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'deposit',
+                            child: Text('Депозит'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'donation',
+                            child: Text('Донейшн'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'sold-out',
+                            child: Text('Солд-аут'),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Bric(
+                      size: const {
+                        BrickWidth.sm: 5,
+                      },
+                      child: Row(
+                        spacing: 10,
+                        children: [
+
+                          SizedBox(
+                            width: 130,
+                            child: SegmentedButton<int>(
+                              segments: const <ButtonSegment<int>>[
+                                ButtonSegment<int>(
+                                    value: 0,
+                                    label: Text('ровно'),
+                                ),
+                                ButtonSegment<int>(
+                                    value: 1,
+                                    label: Text('от'),
+                                ),
+                              ],
+                              selected: {_entryFeeFrom},
+                              onSelectionChanged: (Set<int> newSelection) {
+                                setState(() => _entryFeeFrom = newSelection.first);
+                              },
+                              showSelectedIcon: false,
+                            ),
+                          ),
+
+                          Expanded(
+                            child: TextFormField(
+                              controller: _entryFeePriceCtrl,
+                              decoration: const InputDecoration(
+                                label: Text('Стоимость'),
+                                suffixIcon: Icon(Icons.currency_ruble),
+                              ),
+                              keyboardType: TextInputType.number,
+                            ),
+                          ),
+
+                        ],
                       ),
                     ),
               
