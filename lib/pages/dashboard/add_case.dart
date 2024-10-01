@@ -447,21 +447,21 @@ class _AddCasePageState extends State<AddCasePage> {
                       size: const {
                         BrickWidth.sm: 5,
                       },
-                      child: Row(
-                        spacing: 10,
-                        children: [
-
-                          SizedBox(
-                            width: 130,
+                      child: TextFormField(
+                        controller: _entryFeePriceCtrl,
+                        decoration: InputDecoration(
+                          label: const Text('Стоимость'),
+                          prefix: Padding(
+                            padding: const EdgeInsets.only(right: 10),
                             child: SegmentedButton<int>(
                               segments: const <ButtonSegment<int>>[
                                 ButtonSegment<int>(
-                                    value: 0,
-                                    label: Text('ровно'),
+                                  value: 0,
+                                  label: Text('ровно'),
                                 ),
                                 ButtonSegment<int>(
-                                    value: 1,
-                                    label: Text('от'),
+                                  value: 1,
+                                  label: Text('от'),
                                 ),
                               ],
                               selected: {_entryFeeFrom},
@@ -471,25 +471,15 @@ class _AddCasePageState extends State<AddCasePage> {
                               showSelectedIcon: false,
                             ),
                           ),
-
-                          Expanded(
-                            child: TextFormField(
-                              controller: _entryFeePriceCtrl,
-                              decoration: const InputDecoration(
-                                label: Text('Стоимость'),
-                              ),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                CurrencyInputFormatter(
-                                  trailingSymbol: CurrencySymbols.RUBLE_SIGN,
-                                  thousandSeparator: ThousandSeparator.Space,
-                                  useSymbolPadding: true,
-                                  mantissaLength: 0,
-                                ),
-                              ],
-                            ),
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          CurrencyInputFormatter(
+                            trailingSymbol: CurrencySymbols.RUBLE_SIGN,
+                            thousandSeparator: ThousandSeparator.Space,
+                            useSymbolPadding: true,
+                            mantissaLength: 0,
                           ),
-
                         ],
                       ),
                     ),
