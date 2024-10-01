@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
@@ -464,16 +465,23 @@ class _AddCasePageState extends State<AddCasePage> {
                               controller: _entryFeePriceCtrl,
                               decoration: const InputDecoration(
                                 label: Text('Стоимость'),
-                                suffixIcon: Icon(Icons.currency_ruble),
                               ),
                               keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                CurrencyInputFormatter(
+                                  trailingSymbol: CurrencySymbols.RUBLE_SIGN,
+                                  thousandSeparator: ThousandSeparator.Space,
+                                  useSymbolPadding: true,
+                                  mantissaLength: 0,
+                                ),
+                              ],
                             ),
                           ),
 
                         ],
                       ),
                     ),
-              
+
                   ],
                 ),
               ),
