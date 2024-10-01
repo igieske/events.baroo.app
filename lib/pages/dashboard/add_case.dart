@@ -13,8 +13,8 @@ import 'package:baroo/layout/chiper.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/bar.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
-import 'package:baroo/services/time_text_validator.dart';
-import 'package:baroo/services/date_text_validator.dart';
+import 'package:baroo/services/validators/time_text_validator.dart';
+import 'package:baroo/services/validators/date_text_validator.dart';
 
 
 class AddCasePage extends StatefulWidget {
