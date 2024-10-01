@@ -11,7 +11,6 @@ import 'package:baroo/layout/bric.dart';
 import 'package:baroo/layout/chiper.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/bar.dart';
-import 'package:baroo/models/genre.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
 import 'package:baroo/services/time_formatter.dart';
 import 'package:baroo/services/date_formatter.dart';
@@ -37,7 +36,7 @@ class _AddCasePageState extends State<AddCasePage> {
 
   DateTime? _date;
   List<CaseType> caseTypes = [];
-  List<Genre> genres = [];
+  List<String> genresValue = ['vocal'];
 
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _shortDescriptionCtrl = TextEditingController();
@@ -291,15 +290,9 @@ class _AddCasePageState extends State<AddCasePage> {
                             }).toList()
                           );
                         }).toList(),
-                        values: genres.map((value) => value.slug).toList(),
+                        values: genresValue,
                         onChanged: (values) {
-                          setState(() {
-                            genres = values.fold([], (list, value) {
-                              final matchedType = dict.genres.firstWhereOrNull((item) => item.slug == value);
-                              if (matchedType != null) list.add(matchedType);
-                              return list;
-                            });
-                          });
+                          setState(() => genresValue = values);
                         },
                       ),
                     ),
