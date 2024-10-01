@@ -13,7 +13,7 @@ import 'package:baroo/layout/chiper.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/bar.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
-import 'package:baroo/services/time_formatter.dart';
+import 'package:baroo/services/time_text_validator.dart';
 import 'package:baroo/services/date_formatter.dart';
 
 
