@@ -1,4 +1,4 @@
-String? timeTextValidator(value) {
+String? timeTextValidator(String? value) {
   if (value == null || value.isEmpty) {
     return 'Укажите время';
   }

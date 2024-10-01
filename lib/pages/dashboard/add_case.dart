@@ -13,8 +13,9 @@ import 'package:baroo/layout/chiper.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/bar.dart';
 import 'package:baroo/services/dict/dict_cubit.dart';
-import 'package:baroo/services/validators/time_text_validator.dart';
-import 'package:baroo/services/validators/date_text_validator.dart';
+import 'package:baroo/services/validators/time_validator.dart';
+import 'package:baroo/services/validators/date_validator.dart';
+import 'package:baroo/services/validators/url_validator.dart';
 
 
 class AddCasePage extends StatefulWidget {
@@ -48,6 +49,8 @@ class _AddCasePageState extends State<AddCasePage> {
 
   int _entryFeeFrom = 0;
   final TextEditingController _entryFeePriceCtrl = TextEditingController();
+
+  final TextEditingController _ticketsLinkCtrl = TextEditingController();
 
 
   @override
@@ -179,7 +182,7 @@ class _AddCasePageState extends State<AddCasePage> {
                           ),
                           label: Text('Дата'),
                         ),
-                        validator: (value) => dateTextValidator(value),
+                        validator: dateTextValidator,
                         mouseCursor: SystemMouseCursors.click,
                         canRequestFocus: false,
                         onTap: () async {
@@ -223,7 +226,7 @@ class _AddCasePageState extends State<AddCasePage> {
                               allowedCharMatcher: RegExp(r'[0-9]')
                           ),
                         ],
-                        validator: (value) => timeTextValidator(value),
+                        validator: timeTextValidator,
                       ),
                     ),
 
@@ -245,7 +248,7 @@ class _AddCasePageState extends State<AddCasePage> {
                               allowedCharMatcher: RegExp(r'[0-9]')
                           ),
                         ],
-                        validator: (value) => timeTextValidator(value),
+                        validator: timeTextValidator,
                       ),
                     ),
               
@@ -487,6 +490,22 @@ class _AddCasePageState extends State<AddCasePage> {
                           ),
 
                         ],
+                      ),
+                    ),
+
+                    Bric(
+                      size: const {
+                        BrickWidth.sm: 12,
+                      },
+                      child: TextFormField(
+                        controller: _ticketsLinkCtrl,
+                        decoration: const InputDecoration(
+                          label: Text('Прямая ссылка на страницу покупки билетов / бронь / регистрацию'),
+                          prefixIcon: Icon(Icons.link),
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        keyboardType: TextInputType.url,
+                        validator: urlValidator,
                       ),
                     ),
 

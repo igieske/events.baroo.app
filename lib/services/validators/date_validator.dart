@@ -1,4 +1,4 @@
-String? dateTextValidator(value) {
+String? dateTextValidator(String? value) {
   if (value == null || value.isEmpty) {
     return 'Укажите дату';
   } else if (value.length != 10 || !dateRegExp.hasMatch(value)) {
