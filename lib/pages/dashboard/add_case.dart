@@ -47,6 +47,7 @@ class _AddCasePageState extends State<AddCasePage> {
   XFile? poster;
   final ImagePicker picker = ImagePicker();
 
+  String? _entryFee;
   int _entryFeeFrom = 0;
   final TextEditingController _entryFeePriceCtrl = TextEditingController();
   final TextEditingController _entryFeeCommentCtrl = TextEditingController();
@@ -396,28 +397,22 @@ class _AddCasePageState extends State<AddCasePage> {
 
                     Bric(
                       size: const {
-                        BrickWidth.sm: 4,
+                        BrickWidth.sm: 3,
                       },
                       child: DropdownButtonFormField(
                         decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.attach_money),
-                          labelText: 'Стоимость входа',
+                          labelText: 'Стоимость',
                           labelStyle: TextStyle(color: Colors.grey),
                           counterText: '',
                         ),
-                        // hint: const Text('Выберите время'),
-                        onChanged: (value) {
-                          setState(() {
-                            // _selectedTime = value!;
-                          });
-                        },
+                        onChanged: (value) => setState(() => _entryFee = value!),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Укажите стоимость';
                           }
                           return null;
                         },
-                        // value: 'Любое время',
                         items: const [
                           DropdownMenuItem(
                             value: 'free',
@@ -444,6 +439,22 @@ class _AddCasePageState extends State<AddCasePage> {
                     ),
 
                     Bric(
+                      size: const {
+                        BrickWidth.sm: 9,
+                      },
+                      child: TextFormField(
+                        controller: _ticketsLinkCtrl,
+                        decoration: const InputDecoration(
+                          label: Text('Ссылка на страницу покупки билетов / бронь / регистрацию'),
+                          prefixIcon: Icon(Icons.link),
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        keyboardType: TextInputType.url,
+                        validator: urlValidator,
+                      ),
+                    ),
+
+                    if (_entryFee == 'charge') Bric(
                       size: const {
                         BrickWidth.sm: 5,
                       },
@@ -481,22 +492,6 @@ class _AddCasePageState extends State<AddCasePage> {
                             mantissaLength: 0,
                           ),
                         ],
-                      ),
-                    ),
-
-                    Bric(
-                      size: const {
-                        BrickWidth.sm: 12,
-                      },
-                      child: TextFormField(
-                        controller: _ticketsLinkCtrl,
-                        decoration: const InputDecoration(
-                          label: Text('Прямая ссылка на страницу покупки билетов / бронь / регистрацию'),
-                          prefixIcon: Icon(Icons.link),
-                        ),
-                        clipBehavior: Clip.hardEdge,
-                        keyboardType: TextInputType.url,
-                        validator: urlValidator,
                       ),
                     ),
 
