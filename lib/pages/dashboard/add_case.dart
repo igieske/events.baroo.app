@@ -42,6 +42,7 @@ class _AddCasePageState extends State<AddCasePage> {
 
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _shortDescriptionCtrl = TextEditingController();
+  final TextEditingController _descriptionCtrl = TextEditingController();
   final TextEditingController _sourcesCtrl = TextEditingController();
 
   XFile? poster;
@@ -351,24 +352,42 @@ class _AddCasePageState extends State<AddCasePage> {
               
                     Bric(
                       size: const {
-                        BrickWidth.sm: 6,
+                        BrickWidth.sm: 8,
                       },
-                      child: TextFormField(
-                        controller: _sourcesCtrl,
-                        decoration: const InputDecoration(
-                          label: Text('Источники'),
-                          hintText: 'По одной ссылке в строке',
-                        ),
-                        minLines: 1,
-                        maxLines: 5,
-                        clipBehavior: Clip.hardEdge,
-                        keyboardType: TextInputType.url,
+                      child: Column(
+                        children: [
+
+                          TextFormField(
+                            controller: _sourcesCtrl,
+                            decoration: const InputDecoration(
+                              label: Text('Источники'),
+                              hintText: 'По одной ссылке в строке',
+                            ),
+                            minLines: 1,
+                            maxLines: 5,
+                            clipBehavior: Clip.hardEdge,
+                            keyboardType: TextInputType.url,
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          TextFormField(
+                            controller: _descriptionCtrl,
+                            decoration: const InputDecoration(
+                              label: Text('Подробное описание'),
+                            ),
+                            maxLength: 1200,
+                            minLines: 3,
+                            maxLines: 20,
+                          )
+
+                        ],
                       ),
                     ),
               
                     Bric(
                       size: const {
-                        BrickWidth.sm: 6,
+                        BrickWidth.sm: 4,
                       },
                       child: MouseRegion(
                         cursor: SystemMouseCursors.click,
