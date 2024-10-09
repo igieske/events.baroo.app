@@ -77,6 +77,7 @@ class _AddCasePageState extends State<AddCasePage> {
           } else if (dict is Dict) {
 
             return SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 60),
               child: Form(
                 key: addCaseFormKey,
                 child: Brics(
@@ -85,7 +86,7 @@ class _AddCasePageState extends State<AddCasePage> {
                   maxWidth: 840 - 16 * 2,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   children: [
-              
+
                     Container(
                       padding: const EdgeInsets.only(top: 20),
                       width: double.infinity,
@@ -94,7 +95,7 @@ class _AddCasePageState extends State<AddCasePage> {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 6,
@@ -167,11 +168,11 @@ class _AddCasePageState extends State<AddCasePage> {
                           onSelected: (Bar selection) {
                             print('Выбрано: ${selection.name}, ID: ${selection.id}');
                           },
-              
+
                         );
                       },
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 6,
@@ -210,7 +211,7 @@ class _AddCasePageState extends State<AddCasePage> {
                         },
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 6,
@@ -254,7 +255,7 @@ class _AddCasePageState extends State<AddCasePage> {
                         validator: timeTextValidator,
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 6,
@@ -266,7 +267,7 @@ class _AddCasePageState extends State<AddCasePage> {
                         ),
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 6,
@@ -323,7 +324,7 @@ class _AddCasePageState extends State<AddCasePage> {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 6,
@@ -336,7 +337,7 @@ class _AddCasePageState extends State<AddCasePage> {
                         maxLength: 150,
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 6,
@@ -349,7 +350,7 @@ class _AddCasePageState extends State<AddCasePage> {
                         maxLength: 150,
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 8,
