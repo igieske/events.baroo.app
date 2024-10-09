@@ -24,6 +24,8 @@ ThemeData appThemeLight = ThemeData(
   inputDecorationTheme: const InputDecorationTheme(
     fillColor: Colors.white,
     filled: true,
+    labelStyle: TextStyle(color: Color(0xFF909090)),
+    helperStyle: TextStyle(color: Color(0xFF808080)),
   ),
 
 );

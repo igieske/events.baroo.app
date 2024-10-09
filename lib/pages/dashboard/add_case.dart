@@ -456,10 +456,10 @@ class _AddCasePageState extends State<AddCasePage> {
                         BrickWidth.sm: 3,
                       },
                       child: DropdownButtonFormField(
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.attach_money),
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.attach_money),
                           labelText: 'Стоимость',
-                          labelStyle: TextStyle(color: Colors.grey),
+                          labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
                           counterText: '',
                         ),
                         onChanged: (value) => setState(() => _entryFee = value!),
