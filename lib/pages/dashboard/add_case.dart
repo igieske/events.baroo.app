@@ -384,7 +384,7 @@ class _AddCasePageState extends State<AddCasePage> {
                         ],
                       ),
                     ),
-              
+
                     Bric(
                       size: const {
                         BrickWidth.sm: 4,
@@ -393,18 +393,54 @@ class _AddCasePageState extends State<AddCasePage> {
                         cursor: SystemMouseCursors.click,
                         child: GestureDetector(
                           onTap: () async {
-                            poster = await picker.pickImage(source: ImageSource.gallery);
-                            setState(() { });
+                            if (poster == null) {
+                              final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
+                              if (newPoster != null) {
+                                poster = newPoster;
+                                setState(() { });
+                              }
+                              return;
+                            }
+                            await showDialog(
+                              context: context,
+                              builder: (context) => SimpleDialog(
+                                title: const Text('Постер'),
+                                children: [
+                                  SimpleDialogOption(
+                                    onPressed: () async {
+                                      final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
+                                      if (newPoster != null) {
+                                        poster = newPoster;
+                                        setState(() { });
+                                        if (context.mounted) {
+                                          Navigator.pop(context);
+                                        }
+                                      }
+                                    },
+                                    child: const Text('Изменить'),
+                                  ),
+                                  SimpleDialogOption(
+                                    onPressed: () {
+                                      poster = null;
+                                      setState(() { });
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Удалить'),
+                                  ),
+                                ],
+                              ),
+                            );
                           },
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(5),
                             ),
+                            constraints: const BoxConstraints(minHeight: 180),
                             clipBehavior: Clip.hardEdge,
                             child: Center(
                               child: poster == null
-                                ? const Text('Выбрать')
+                                ? const Text('Нет постера')
                                 : kIsWeb
                                   ? Image.network(poster!.path)
                                   : Image.file(File(poster!.path)),
