@@ -78,6 +78,9 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
         title: const Text('Добавить событие'),
         bottom: TabBar(
           controller: _tabController,
+          tabAlignment: TabAlignment.center,
+          indicatorSize: TabBarIndicatorSize.tab,
+          indicatorWeight: 4,
           tabs: const [
             Tab(icon: Icon(Icons.info_outline)),
             Tab(icon: Icon(Icons.pin_drop_outlined)),
@@ -101,548 +104,532 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
 
                   // info tab
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                  [
+                    const AddCasePageTitle(title: 'Основная информация'),
+                    Brics(
+                      gap: 16,
+                      crossGap: 16,
+                      // maxWidth: 1200 - 16 * 2,
+                      // padding: const EdgeInsets.symmetric(horizontal: 16),
+                      children: [
 
-                      Container(
-                        padding: const EdgeInsets.only(top: 20),
-                        width: double.infinity,
-                        child: Text(
-                          'Место и время',
-                          style: Theme.of(context).textTheme.titleLarge,
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 6,
+                          },
+                          child: TextFormField(
+                            controller: _titleCtrl,
+                            decoration: const InputDecoration(
+                              label: Text('Название события'),
+                            ),
+                            maxLength: 150,
+                          ),
                         ),
-                      ),
 
-                      Brics(
-                        gap: 16,
-                        crossGap: 16,
-                        // maxWidth: 1200 - 16 * 2,
-                        // padding: const EdgeInsets.symmetric(horizontal: 16),
-                        children: [
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 5,
-                            },
-                            builder: (context, bricWidth) {
-                              return Autocomplete<Bar>(
-                                displayStringForOption: (Bar bar) => bar.name,
-                                optionsBuilder: (TextEditingValue textEditingValue) {
-                                  if (textEditingValue.text.length < 2) {
-                                    return const Iterable<Bar>.empty();
-                                  }
-                                  return dict.bars.where((bar) => bar.name.toLowerCase()
-                                      .contains(textEditingValue.text.toLowerCase()));
-                                },
-                                optionsViewBuilder: (BuildContext context,
-                                    AutocompleteOnSelected<Bar> onSelected,
-                                    Iterable<Bar> options) {
-                                  return Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Material(
-                                      elevation: 4.0,
-                                      child: ConstrainedBox(
-                                        constraints: BoxConstraints(maxWidth: bricWidth),
-                                        child: ListView.builder(
-                                          padding: EdgeInsets.zero,
-                                          shrinkWrap: true,
-                                          itemCount: options.length,
-                                          itemBuilder: (BuildContext context, int index) {
-                                            final Bar bar = options.elementAt(index);
-                                            return InkWell(
-                                              onTap: () {
-                                                onSelected(bar);
-                                              },
-                                              child: Builder(
-                                                  builder: (BuildContext context) {
-                                                    final bool highlight = AutocompleteHighlightedOption.of(context) == index;
-                                                    if (highlight) {
-                                                      SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
-                                                        Scrollable.ensureVisible(context, alignment: 0.5);
-                                                      });
-                                                    }
-                                                    return Container(
-                                                      color: highlight ? Theme.of(context).focusColor : null,
-                                                      padding: const EdgeInsets.all(16.0),
-                                                      child: Text(
-                                                        RawAutocomplete.defaultStringForOption(bar.name),
-                                                      ),
-                                                    );
-                                                  }
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
-                                  return TextField(
-                                    controller: controller,
-                                    focusNode: focusNode,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Место',
-                                    ),
-                                    onSubmitted: (value) {
-                                      onFieldSubmitted();
-                                    },
-                                  );
-                                },
-                                onSelected: (Bar selection) {
-                                  print('Выбрано: ${selection.name}, ID: ${selection.id}');
-                                },
-
-                              );
-                            },
-                          ),
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 3,
-                            },
-                            child: TextFormField(
-                              controller: _dateCtrl,
-                              decoration: const InputDecoration(
-                                prefixIcon: MouseRegion(
-                                  cursor: SystemMouseCursors.click,
-                                  child: Icon(Icons.calendar_month),
-                                ),
-                                label: Text('Дата'),
-                              ),
-                              validator: dateTextValidator,
-                              mouseCursor: SystemMouseCursors.click,
-                              canRequestFocus: false,
-                              onTap: () async {
-                                final DateTime today = DateTime.now().copyWith(
-                                  hour: 0,
-                                  minute: 0,
-                                  second: 0,
-                                  millisecond: 0,
-                                  microsecond: 0,
-                                );
-                                DateTime? datePickerResult = await showDatePicker(
-                                  context: context,
-                                  initialDate: _date,
-                                  locale: const Locale('ru'),
-                                  firstDate: today,
-                                  lastDate: today.add(const Duration(days: 365)),
-                                );
-                                if (datePickerResult != null) {
-                                  _date = datePickerResult;
-                                  _dateCtrl.text = DateFormat('dd.MM.yyyy').format(datePickerResult);
-                                }
-                              },
-                            ),
-                          ),
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 2,
-                            },
-                            child: TextFormField(
-                              controller: _timeEntryCtrl,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.access_time),
-                                label: Text('Двери'),
-                                counterText: '',
-                              ),
-                              maxLength: 5,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                MaskedInputFormatter('##:##',
-                                    allowedCharMatcher: RegExp(r'[0-9]')
-                                ),
-                              ],
-                              validator: timeTextValidator,
-                            ),
-                          ),
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 2,
-                            },
-                            child: TextFormField(
-                              controller: _timeStartCtrl,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.access_time),
-                                label: Text('Начало'),
-                                counterText: '',
-                              ),
-                              maxLength: 5,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                MaskedInputFormatter('##:##',
-                                    allowedCharMatcher: RegExp(r'[0-9]')
-                                ),
-                              ],
-                              validator: timeTextValidator,
-                            ),
-                          ),
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 4,
-                            },
-                            child: TextFormField(
-                              controller: _placeDetailsCtrl,
-                              decoration: const InputDecoration(
-                                label: Text('Уточнение о локации'),
-                              ),
-                            ),
-                          ),
-
-                        ],
-
-                      ),
-
-                      Container(
-                        padding: const EdgeInsets.only(top: 20),
-                        width: double.infinity,
-                        child: Text(
-                          'Основная информация',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
-
-                      Brics(
-                        gap: 16,
-                        crossGap: 16,
-                        // maxWidth: 1200 - 16 * 2,
-                        // padding: const EdgeInsets.symmetric(horizontal: 16),
-                        children: [
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 6,
-                            },
-                            child: TextFormField(
-                              controller: _titleCtrl,
-                              decoration: const InputDecoration(
-                                label: Text('Название события'),
-                              ),
-                              maxLength: 150,
-                            ),
-                          ),
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 4,
-                            },
-                            child: Chiper(
-                              labelText: 'Тип события',
-                              options: dict.caseTypes.map((caseType) => ChiperOption(
-                                value: caseType.slug,
-                                label: caseType.name,
-                              )).toList(),
-                              values: caseTypes.map((value) => value.slug).toList(),
-                              onChanged: (values) {
-                                setState(() {
-                                  caseTypes = values.fold([], (list, value) {
-                                    final matchedType = dict.caseTypes.firstWhereOrNull((item) => item.slug == value);
-                                    if (matchedType != null) list.add(matchedType);
-                                    return list;
-                                  });
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 4,
+                          },
+                          child: Chiper(
+                            labelText: 'Тип события',
+                            options: dict.caseTypes.map((caseType) => ChiperOption(
+                              value: caseType.slug,
+                              label: caseType.name,
+                            )).toList(),
+                            values: caseTypes.map((value) => value.slug).toList(),
+                            onChanged: (values) {
+                              setState(() {
+                                caseTypes = values.fold([], (list, value) {
+                                  final matchedType = dict.caseTypes.firstWhereOrNull((item) => item.slug == value);
+                                  if (matchedType != null) list.add(matchedType);
+                                  return list;
                                 });
-                              },
-                            ),
-                          ),
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 6,
+                              });
                             },
-                            child: Chiper(
-                              labelText: 'Жанры',
-                              options: dict.genres.map((genre) {
-                                return ChiperOption(
-                                    value: genre.slug,
-                                    label: genre.label,
-                                    subOptions: genre.subgenres?.map((subgenre) {
-                                      return ChiperOption(
-                                        value: subgenre.slug,
-                                        label: subgenre.label,
-                                      );
-                                    }).toList()
-                                );
-                              }).toList(),
-                              values: genresValue,
-                              onChanged: (values) {
-                                setState(() => genresValue = values);
-                              },
-                            ),
                           ),
+                        ),
 
-                          Brics(
-                            gap: 16,
-                            crossGap: 16,
-                            children: [
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 6,
+                          },
+                          child: Chiper(
+                            labelText: 'Жанры',
+                            options: dict.genres.map((genre) {
+                              return ChiperOption(
+                                  value: genre.slug,
+                                  label: genre.label,
+                                  subOptions: genre.subgenres?.map((subgenre) {
+                                    return ChiperOption(
+                                      value: subgenre.slug,
+                                      label: subgenre.label,
+                                    );
+                                  }).toList()
+                              );
+                            }).toList(),
+                            values: genresValue,
+                            onChanged: (values) {
+                              setState(() => genresValue = values);
+                            },
+                          ),
+                        ),
 
-                              Bric(
-                                size: const {
-                                  BrickWidth.sm: 12,
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                        Brics(
+                          gap: 16,
+                          crossGap: 16,
+                          children: [
 
-                                    TextFormField(
-                                      controller: _sourcesCtrl,
-                                      decoration: const InputDecoration(
-                                        label: Text('Источники'),
-                                        hintText: 'По одной ссылке в строке',
-                                      ),
-                                      minLines: 1,
-                                      maxLines: 5,
-                                      clipBehavior: Clip.hardEdge,
-                                      keyboardType: TextInputType.url,
+                            Bric(
+                              size: const {
+                                BrickWidth.sm: 12,
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+
+                                  TextFormField(
+                                    controller: _sourcesCtrl,
+                                    decoration: const InputDecoration(
+                                      label: Text('Источники'),
+                                      hintText: 'По одной ссылке в строке',
                                     ),
+                                    minLines: 1,
+                                    maxLines: 5,
+                                    clipBehavior: Clip.hardEdge,
+                                    keyboardType: TextInputType.url,
+                                  ),
 
-                                    const SizedBox(height: 16),
+                                  const SizedBox(height: 16),
 
-                                    TextFormField(
-                                      controller: _shortDescriptionCtrl,
-                                      decoration: const InputDecoration(
-                                        label: Text('Краткое описание'),
-                                      ),
-                                      maxLength: 150,
+                                  TextFormField(
+                                    controller: _shortDescriptionCtrl,
+                                    decoration: const InputDecoration(
+                                      label: Text('Краткое описание'),
                                     ),
+                                    maxLength: 150,
+                                  ),
 
-                                    const SizedBox(height: 6),
+                                  const SizedBox(height: 6),
 
-                                    TextFormField(
-                                      controller: _descriptionCtrl,
-                                      decoration: const InputDecoration(
-                                        label: Text('Подробное описание'),
-                                      ),
-                                      maxLength: 1200,
-                                      minLines: 3,
-                                      maxLines: 20,
+                                  TextFormField(
+                                    controller: _descriptionCtrl,
+                                    decoration: const InputDecoration(
+                                      label: Text('Подробное описание'),
                                     ),
+                                    maxLength: 1200,
+                                    minLines: 3,
+                                    maxLines: 20,
+                                  ),
 
-                                  ],
-                                ),
+                                ],
                               ),
+                            ),
 
-                              Bric(
-                                size: const {
-                                  BrickWidth.sm: 4,
-                                },
-                                child: MouseRegion(
-                                  cursor: SystemMouseCursors.click,
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      if (poster == null) {
-                                        final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
-                                        if (newPoster != null) {
-                                          poster = newPoster;
-                                          setState(() { });
-                                        }
-                                        return;
+                            Bric(
+                              size: const {
+                                BrickWidth.sm: 4,
+                              },
+                              child: MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    if (poster == null) {
+                                      final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
+                                      if (newPoster != null) {
+                                        poster = newPoster;
+                                        setState(() { });
                                       }
-                                      await showDialog(
-                                        context: context,
-                                        builder: (context) => SimpleDialog(
-                                          title: const Text('Постер'),
-                                          children: [
-                                            SimpleDialogOption(
-                                              onPressed: () async {
-                                                final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
-                                                if (newPoster != null) {
-                                                  poster = newPoster;
-                                                  setState(() { });
-                                                  if (context.mounted) {
-                                                    Navigator.pop(context);
-                                                  }
-                                                }
-                                              },
-                                              child: const Text('Изменить'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                poster = null;
+                                      return;
+                                    }
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) => SimpleDialog(
+                                        title: const Text('Постер'),
+                                        children: [
+                                          SimpleDialogOption(
+                                            onPressed: () async {
+                                              final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
+                                              if (newPoster != null) {
+                                                poster = newPoster;
                                                 setState(() { });
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Удалить'),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
+                                                if (context.mounted) {
+                                                  Navigator.pop(context);
+                                                }
+                                              }
+                                            },
+                                            child: const Text('Изменить'),
+                                          ),
+                                          SimpleDialogOption(
+                                            onPressed: () {
+                                              poster = null;
+                                              setState(() { });
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Удалить'),
+                                          ),
+                                        ],
                                       ),
-                                      constraints: const BoxConstraints(minHeight: 180),
-                                      clipBehavior: Clip.hardEdge,
-                                      child: Center(
-                                        child: poster == null
-                                            ? const Text('Нет постера')
-                                            : kIsWeb
-                                            ? Image.network(poster!.path)
-                                            : Image.file(File(poster!.path)),
-                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    constraints: const BoxConstraints(minHeight: 180),
+                                    clipBehavior: Clip.hardEdge,
+                                    child: Center(
+                                      child: poster == null
+                                          ? const Text('Нет постера')
+                                          : kIsWeb
+                                          ? Image.network(poster!.path)
+                                          : Image.file(File(poster!.path)),
                                     ),
                                   ),
                                 ),
                               ),
+                            ),
 
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ],
+
+                  // place tab
+
+                  [
+                    const AddCasePageTitle(title: 'Место и время'),
+                    Brics(
+                      gap: 16,
+                      crossGap: 16,
+                      // maxWidth: 1200 - 16 * 2,
+                      // padding: const EdgeInsets.symmetric(horizontal: 16),
+                      children: [
+
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 5,
+                          },
+                          builder: (context, bricWidth) {
+                            return Autocomplete<Bar>(
+                              displayStringForOption: (Bar bar) => bar.name,
+                              optionsBuilder: (TextEditingValue textEditingValue) {
+                                if (textEditingValue.text.length < 2) {
+                                  return const Iterable<Bar>.empty();
+                                }
+                                return dict.bars.where((bar) => bar.name.toLowerCase()
+                                    .contains(textEditingValue.text.toLowerCase()));
+                              },
+                              optionsViewBuilder: (BuildContext context,
+                                  AutocompleteOnSelected<Bar> onSelected,
+                                  Iterable<Bar> options) {
+                                return Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    elevation: 4.0,
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(maxWidth: bricWidth),
+                                      child: ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        shrinkWrap: true,
+                                        itemCount: options.length,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          final Bar bar = options.elementAt(index);
+                                          return InkWell(
+                                            onTap: () {
+                                              onSelected(bar);
+                                            },
+                                            child: Builder(
+                                                builder: (BuildContext context) {
+                                                  final bool highlight = AutocompleteHighlightedOption.of(context) == index;
+                                                  if (highlight) {
+                                                    SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
+                                                      Scrollable.ensureVisible(context, alignment: 0.5);
+                                                    });
+                                                  }
+                                                  return Container(
+                                                    color: highlight ? Theme.of(context).focusColor : null,
+                                                    padding: const EdgeInsets.all(16.0),
+                                                    child: Text(
+                                                      RawAutocomplete.defaultStringForOption(bar.name),
+                                                    ),
+                                                  );
+                                                }
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+                                return TextField(
+                                  controller: controller,
+                                  focusNode: focusNode,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Место',
+                                  ),
+                                  onSubmitted: (value) {
+                                    onFieldSubmitted();
+                                  },
+                                );
+                              },
+                              onSelected: (Bar selection) {
+                                print('Выбрано: ${selection.name}, ID: ${selection.id}');
+                              },
+
+                            );
+                          },
+                        ),
+
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 3,
+                          },
+                          child: TextFormField(
+                            controller: _dateCtrl,
+                            decoration: const InputDecoration(
+                              prefixIcon: MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: Icon(Icons.calendar_month),
+                              ),
+                              label: Text('Дата'),
+                            ),
+                            validator: dateTextValidator,
+                            mouseCursor: SystemMouseCursors.click,
+                            canRequestFocus: false,
+                            onTap: () async {
+                              final DateTime today = DateTime.now().copyWith(
+                                hour: 0,
+                                minute: 0,
+                                second: 0,
+                                millisecond: 0,
+                                microsecond: 0,
+                              );
+                              DateTime? datePickerResult = await showDatePicker(
+                                context: context,
+                                initialDate: _date,
+                                locale: const Locale('ru'),
+                                firstDate: today,
+                                lastDate: today.add(const Duration(days: 365)),
+                              );
+                              if (datePickerResult != null) {
+                                _date = datePickerResult;
+                                _dateCtrl.text = DateFormat('dd.MM.yyyy').format(datePickerResult);
+                              }
+                            },
+                          ),
+                        ),
+
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 2,
+                          },
+                          child: TextFormField(
+                            controller: _timeEntryCtrl,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.access_time),
+                              label: Text('Двери'),
+                              counterText: '',
+                            ),
+                            maxLength: 5,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              MaskedInputFormatter('##:##',
+                                  allowedCharMatcher: RegExp(r'[0-9]')
+                              ),
+                            ],
+                            validator: timeTextValidator,
+                          ),
+                        ),
+
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 2,
+                          },
+                          child: TextFormField(
+                            controller: _timeStartCtrl,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.access_time),
+                              label: Text('Начало'),
+                              counterText: '',
+                            ),
+                            maxLength: 5,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              MaskedInputFormatter('##:##',
+                                  allowedCharMatcher: RegExp(r'[0-9]')
+                              ),
+                            ],
+                            validator: timeTextValidator,
+                          ),
+                        ),
+
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 4,
+                          },
+                          child: TextFormField(
+                            controller: _placeDetailsCtrl,
+                            decoration: const InputDecoration(
+                              label: Text('Уточнение о локации'),
+                            ),
+                          ),
+                        ),
+
+                      ],
+
+                    ),
+                  ],
+
+                  // entry fee tab
+
+                  [
+                    const AddCasePageTitle(title: 'Стоимость'),
+                    Brics(
+                      gap: 16,
+                      crossGap: 16,
+                      // maxWidth: 1200 - 16 * 2,
+                      // padding: const EdgeInsets.symmetric(horizontal: 16),
+                      children: [
+
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 3,
+                          },
+                          child: DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.attach_money),
+                              labelText: 'Стоимость',
+                              labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                              counterText: '',
+                            ),
+                            onChanged: (value) => setState(() => _entryFee = value!),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Укажите стоимость';
+                              }
+                              return null;
+                            },
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'free',
+                                child: Text('FREE'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'charge',
+                                child: Text('Платный'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'deposit',
+                                child: Text('Депозит'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'donation',
+                                child: Text('Донейшн'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'sold-out',
+                                child: Text('Солд-аут'),
+                              ),
                             ],
                           ),
-
-                        ],
-                      ),
-
-                      Container(
-                        padding: const EdgeInsets.only(top: 20),
-                        width: double.infinity,
-                        child: Text(
-                          'Стоимость',
-                          style: Theme.of(context).textTheme.titleLarge,
                         ),
-                      ),
 
-                      Brics(
-                        gap: 16,
-                        crossGap: 16,
-                        // maxWidth: 1200 - 16 * 2,
-                        // padding: const EdgeInsets.symmetric(horizontal: 16),
-                        children: [
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 3,
-                            },
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                prefixIcon: const Icon(Icons.attach_money),
-                                labelText: 'Стоимость',
-                                labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-                                counterText: '',
-                              ),
-                              onChanged: (value) => setState(() => _entryFee = value!),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Укажите стоимость';
-                                }
-                                return null;
-                              },
-                              items: const [
-                                DropdownMenuItem(
-                                  value: 'free',
-                                  child: Text('FREE'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'charge',
-                                  child: Text('Платный'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'deposit',
-                                  child: Text('Депозит'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'donation',
-                                  child: Text('Донейшн'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'sold-out',
-                                  child: Text('Солд-аут'),
-                                ),
-                              ],
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 13,
+                          },
+                          child: TextFormField(
+                            controller: _ticketsLinkCtrl,
+                            decoration: const InputDecoration(
+                              label: Text('Ссылка на страницу покупки билетов / бронь / регистрацию'),
+                              prefixIcon: Icon(Icons.link),
                             ),
+                            clipBehavior: Clip.hardEdge,
+                            keyboardType: TextInputType.url,
+                            validator: urlValidator,
                           ),
+                        ),
 
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 13,
-                            },
-                            child: TextFormField(
-                              controller: _ticketsLinkCtrl,
-                              decoration: const InputDecoration(
-                                label: Text('Ссылка на страницу покупки билетов / бронь / регистрацию'),
-                                prefixIcon: Icon(Icons.link),
-                              ),
-                              clipBehavior: Clip.hardEdge,
-                              keyboardType: TextInputType.url,
-                              validator: urlValidator,
-                            ),
-                          ),
-
-                          if (_entryFee == 'charge') Bric(
-                            size: const {
-                              BrickWidth.sm: 5,
-                            },
-                            child: TextFormField(
-                              controller: _entryFeePriceCtrl,
-                              decoration: InputDecoration(
-                                label: const Text('Стоимость'),
-                                prefix: Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: SegmentedButton<int>(
-                                    segments: const <ButtonSegment<int>>[
-                                      ButtonSegment<int>(
-                                        value: 0,
-                                        label: Text('ровно'),
-                                      ),
-                                      ButtonSegment<int>(
-                                        value: 1,
-                                        label: Text('от'),
-                                      ),
-                                    ],
-                                    selected: {_entryFeeFrom},
-                                    onSelectionChanged: (Set<int> newSelection) {
-                                      setState(() => _entryFeeFrom = newSelection.first);
-                                    },
-                                    showSelectedIcon: false,
-                                  ),
+                        if (_entryFee == 'charge') Bric(
+                          size: const {
+                            BrickWidth.sm: 5,
+                          },
+                          child: TextFormField(
+                            controller: _entryFeePriceCtrl,
+                            decoration: InputDecoration(
+                              label: const Text('Стоимость'),
+                              prefix: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: SegmentedButton<int>(
+                                  segments: const <ButtonSegment<int>>[
+                                    ButtonSegment<int>(
+                                      value: 0,
+                                      label: Text('ровно'),
+                                    ),
+                                    ButtonSegment<int>(
+                                      value: 1,
+                                      label: Text('от'),
+                                    ),
+                                  ],
+                                  selected: {_entryFeeFrom},
+                                  onSelectionChanged: (Set<int> newSelection) {
+                                    setState(() => _entryFeeFrom = newSelection.first);
+                                  },
+                                  showSelectedIcon: false,
                                 ),
                               ),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                CurrencyInputFormatter(
-                                  trailingSymbol: CurrencySymbols.RUBLE_SIGN,
-                                  thousandSeparator: ThousandSeparator.Space,
-                                  useSymbolPadding: true,
-                                  mantissaLength: 0,
-                                ),
-                              ],
                             ),
-                          ),
-
-                          Bric(
-                            size: const {
-                              BrickWidth.sm: 8,
-                            },
-                            child: TextFormField(
-                              controller: _entryFeeCommentCtrl,
-                              decoration: const InputDecoration(
-                                label: Text('Комментарий о входе'),
-                                prefixIcon: Icon(Icons.comment_outlined),
-                                helperText: 'Например, "вход любая бумажная купюра" / "рекомендованный донейшн 200 руб." / "обязательная регистрация"',
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              CurrencyInputFormatter(
+                                trailingSymbol: CurrencySymbols.RUBLE_SIGN,
+                                thousandSeparator: ThousandSeparator.Space,
+                                useSymbolPadding: true,
+                                mantissaLength: 0,
                               ),
-                              maxLength: 70,
-                            ),
+                            ],
                           ),
+                        ),
 
-                        ],
-                      ),
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 8,
+                          },
+                          child: TextFormField(
+                            controller: _entryFeeCommentCtrl,
+                            decoration: const InputDecoration(
+                              label: Text('Комментарий о входе'),
+                              prefixIcon: Icon(Icons.comment_outlined),
+                              helperText: 'Например, "вход любая бумажная купюра" / "рекомендованный донейшн 200 руб." / "обязательная регистрация"',
+                            ),
+                            maxLength: 70,
+                          ),
+                        ),
 
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
 
-                  Text('22'),
-                  Text('33'),
-                  Text('44'),
+                  // todo
 
-                ].map((tabBar) => SingleChildScrollView(
+                  [
+                    const AddCasePageTitle(title: 'todo'),
+                  ],
+
+                ].map((tabBarChildren) => SingleChildScrollView(
                   child: Center(
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 60),
                       constraints: const BoxConstraints(maxWidth: 1200),
-                      child: tabBar,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: tabBarChildren,
+                      ),
                     )
                   ),
                 )).toList(),
@@ -654,6 +641,24 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
           }
 
         },
+      ),
+    );
+  }
+}
+
+class AddCasePageTitle extends StatelessWidget {
+  final String title;
+
+  const AddCasePageTitle({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
+      width: double.infinity,
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleLarge,
       ),
     );
   }
