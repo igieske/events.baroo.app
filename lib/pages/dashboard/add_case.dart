@@ -625,7 +625,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                   child: Center(
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 60),
-                      constraints: const BoxConstraints(maxWidth: 1200),
+                      constraints: const BoxConstraints(maxWidth: 840),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: tabBarChildren,
