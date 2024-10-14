@@ -655,10 +655,10 @@ class AddCasePageTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 20, bottom: 20),
-      width: double.infinity,
+      alignment: Alignment.center,
       child: Text(
         title,
-        style: Theme.of(context).textTheme.titleLarge,
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }
