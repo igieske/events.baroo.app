@@ -118,7 +118,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
 
                         Bric(
                           size: const {
-                            BrickWidth.sm: 6,
+                            BrickWidth.sm: 7,
                           },
                           child: TextFormField(
                             controller: _titleCtrl,
@@ -131,7 +131,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
 
                         Bric(
                           size: const {
-                            BrickWidth.sm: 4,
+                            BrickWidth.sm: 5,
                           },
                           child: Chiper(
                             labelText: 'Тип события',
@@ -148,31 +148,6 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                                   return list;
                                 });
                               });
-                            },
-                          ),
-                        ),
-
-                        Bric(
-                          size: const {
-                            BrickWidth.sm: 6,
-                          },
-                          child: Chiper(
-                            labelText: 'Жанры',
-                            options: dict.genres.map((genre) {
-                              return ChiperOption(
-                                  value: genre.slug,
-                                  label: genre.label,
-                                  subOptions: genre.subgenres?.map((subgenre) {
-                                    return ChiperOption(
-                                      value: subgenre.slug,
-                                      label: subgenre.label,
-                                    );
-                                  }).toList()
-                              );
-                            }).toList(),
-                            values: genresValue,
-                            onChanged: (values) {
-                              setState(() => genresValue = values);
                             },
                           ),
                         ),
@@ -675,10 +650,32 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                     ),
                   ],
 
-                  // todo
+                  // артисты и жанры
 
                   [
-                    const AddCasePageTitle(title: 'todo'),
+                    const AddCasePageTitle(title: 'Артисты и жанры'),
+
+                    Bric(
+                      child: Chiper(
+                        labelText: 'Жанры',
+                        options: dict.genres.map((genre) {
+                          return ChiperOption(
+                              value: genre.slug,
+                              label: genre.label,
+                              subOptions: genre.subgenres?.map((subgenre) {
+                                return ChiperOption(
+                                  value: subgenre.slug,
+                                  label: subgenre.label,
+                                );
+                              }).toList()
+                          );
+                        }).toList(),
+                        values: genresValue,
+                        onChanged: (values) {
+                          setState(() => genresValue = values);
+                        },
+                      ),
+                    ),
                   ],
 
                 ].map((tabBarChildren) => SingleChildScrollView(
