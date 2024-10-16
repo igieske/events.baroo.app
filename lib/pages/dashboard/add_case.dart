@@ -105,7 +105,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                 controller: _tabController,
                 children: [
 
-                  // info tab
+                  // таб "инфо"
 
                   [
                     const AddCasePageTitle(title: 'Основная информация'),
@@ -116,6 +116,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                       // padding: const EdgeInsets.symmetric(horizontal: 16),
                       children: [
 
+                        // название события
                         Bric(
                           size: const {
                             BrickWidth.sm: 7,
@@ -129,6 +130,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                           ),
                         ),
 
+                        // тип события
                         Bric(
                           size: const {
                             BrickWidth.sm: 5,
@@ -152,182 +154,161 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                           ),
                         ),
 
-                        Brics(
-                          gap: 16,
-                          crossGap: 16,
-                          children: [
+                        // источники
+                        TextFormField(
+                          controller: _sourcesCtrl,
+                          decoration: const InputDecoration(
+                            label: Text('Источники'),
+                            hintText: 'По одной ссылке в строке',
+                          ),
+                          minLines: 1,
+                          maxLines: 5,
+                          clipBehavior: Clip.hardEdge,
+                          keyboardType: TextInputType.url,
+                        ),
 
-                            Bric(
-                              size: const {
-                                BrickWidth.sm: 12,
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                        // краткое описание
+                        TextFormField(
+                          controller: _shortDescriptionCtrl,
+                          decoration: const InputDecoration(
+                            label: Text('Краткое описание'),
+                          ),
+                          maxLength: 150,
+                        ),
 
-                                  TextFormField(
-                                    controller: _sourcesCtrl,
-                                    decoration: const InputDecoration(
-                                      label: Text('Источники'),
-                                      hintText: 'По одной ссылке в строке',
-                                    ),
-                                    minLines: 1,
-                                    maxLines: 5,
-                                    clipBehavior: Clip.hardEdge,
-                                    keyboardType: TextInputType.url,
-                                  ),
-
-                                  const SizedBox(height: 16),
-
-                                  TextFormField(
-                                    controller: _shortDescriptionCtrl,
-                                    decoration: const InputDecoration(
-                                      label: Text('Краткое описание'),
-                                    ),
-                                    maxLength: 150,
-                                  ),
-
-                                  const SizedBox(height: 6),
-
-                                  // подробное описание
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                      children: [
-                                        QuillSimpleToolbar(
-                                          controller: _descriptionCtrl,
-                                          configurations: const QuillSimpleToolbarConfigurations(
-                                            sectionDividerColor: Color(0xFFDEDEDE),
-                                            toolbarIconAlignment: WrapAlignment.start,
-                                            showBackgroundColorButton: false,
-                                            showClipboardCopy: false,
-                                            showClipboardPaste: false,
-                                            showClipboardCut: false,
-                                            showListCheck: false,
-                                            showListNumbers: false,
-                                            showSubscript: false,
-                                            showSuperscript: false,
-                                            showColorButton: false,
-                                            showStrikeThrough: false,
-                                            showFontSize: false,
-                                            showFontFamily: false,
-                                            showSearchButton: false,
-                                            showIndent: false,
-                                            showUndo: false,
-                                            showRedo: false,
-                                            showHeaderStyle: false,
-                                            showCodeBlock: false,
-                                            showInlineCode: false,
-                                          ),
-                                        ),
-                                        const Divider(height: 2, color: Color(0xFFDEDEDE)),
-                                        QuillEditor.basic(
-                                          controller: _descriptionCtrl,
-                                          configurations: const QuillEditorConfigurations(
-                                            minHeight: 150,
-                                            maxHeight: 500,
-                                            padding: EdgeInsets.all(12),
-                                            placeholder: 'Подробное описание',
-                                            showCursor: true,
-                                            customStyles: DefaultStyles(
-                                              placeHolder: DefaultTextBlockStyle(
-                                                TextStyle(
-                                                  color: Color(0xFF909090),
-                                                  fontSize: 16,
-                                                ),
-                                                HorizontalSpacing(0, 0),
-                                                VerticalSpacing(0, 0),
-                                                VerticalSpacing(0, 0),
-                                                BoxDecoration(),
-                                              )
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-
-                                ],
+                        // подробное описание
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              QuillSimpleToolbar(
+                                controller: _descriptionCtrl,
+                                configurations: const QuillSimpleToolbarConfigurations(
+                                  sectionDividerColor: Color(0xFFDEDEDE),
+                                  toolbarIconAlignment: WrapAlignment.start,
+                                  showBackgroundColorButton: false,
+                                  showClipboardCopy: false,
+                                  showClipboardPaste: false,
+                                  showClipboardCut: false,
+                                  showListCheck: false,
+                                  showListNumbers: false,
+                                  showSubscript: false,
+                                  showSuperscript: false,
+                                  showColorButton: false,
+                                  showStrikeThrough: false,
+                                  showFontSize: false,
+                                  showFontFamily: false,
+                                  showSearchButton: false,
+                                  showIndent: false,
+                                  showUndo: false,
+                                  showRedo: false,
+                                  showHeaderStyle: false,
+                                  showCodeBlock: false,
+                                  showInlineCode: false,
+                                ),
                               ),
-                            ),
-
-                            Bric(
-                              size: const {
-                                BrickWidth.sm: 4,
-                              },
-                              child: MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    if (poster == null) {
-                                      final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
-                                      if (newPoster != null) {
-                                        poster = newPoster;
-                                        setState(() { });
-                                      }
-                                      return;
-                                    }
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) => SimpleDialog(
-                                        title: const Text('Постер'),
-                                        children: [
-                                          SimpleDialogOption(
-                                            onPressed: () async {
-                                              final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
-                                              if (newPoster != null) {
-                                                poster = newPoster;
-                                                setState(() { });
-                                                if (context.mounted) {
-                                                  Navigator.pop(context);
-                                                }
-                                              }
-                                            },
-                                            child: const Text('Изменить'),
-                                          ),
-                                          SimpleDialogOption(
-                                            onPressed: () {
-                                              poster = null;
-                                              setState(() { });
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('Удалить'),
-                                          ),
-                                        ],
+                              const Divider(height: 2, color: Color(0xFFDEDEDE)),
+                              QuillEditor.basic(
+                                controller: _descriptionCtrl,
+                                configurations: const QuillEditorConfigurations(
+                                  minHeight: 150,
+                                  maxHeight: 500,
+                                  padding: EdgeInsets.all(12),
+                                  placeholder: 'Подробное описание',
+                                  showCursor: true,
+                                  customStyles: DefaultStyles(
+                                    placeHolder: DefaultTextBlockStyle(
+                                      TextStyle(
+                                        color: Color(0xFF909090),
+                                        fontSize: 16,
                                       ),
-                                    );
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    constraints: const BoxConstraints(minHeight: 180),
-                                    clipBehavior: Clip.hardEdge,
-                                    child: Center(
-                                      child: poster == null
-                                          ? const Text('Нет постера')
-                                          : kIsWeb
-                                          ? Image.network(poster!.path)
-                                          : Image.file(File(poster!.path)),
-                                    ),
+                                      HorizontalSpacing(0, 0),
+                                      VerticalSpacing(0, 0),
+                                      VerticalSpacing(0, 0),
+                                      BoxDecoration(),
+                                    )
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
+                          ),
+                        ),
 
-                          ],
+                        // постер
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 4,
+                          },
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (poster == null) {
+                                  final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
+                                  if (newPoster != null) {
+                                    poster = newPoster;
+                                    setState(() { });
+                                  }
+                                  return;
+                                }
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) => SimpleDialog(
+                                    title: const Text('Постер'),
+                                    children: [
+                                      SimpleDialogOption(
+                                        onPressed: () async {
+                                          final XFile? newPoster = await picker.pickImage(source: ImageSource.gallery);
+                                          if (newPoster != null) {
+                                            poster = newPoster;
+                                            setState(() { });
+                                            if (context.mounted) {
+                                              Navigator.pop(context);
+                                            }
+                                          }
+                                        },
+                                        child: const Text('Изменить'),
+                                      ),
+                                      SimpleDialogOption(
+                                        onPressed: () {
+                                          poster = null;
+                                          setState(() { });
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Удалить'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                constraints: const BoxConstraints(minHeight: 180),
+                                clipBehavior: Clip.hardEdge,
+                                child: Center(
+                                  child: poster == null
+                                      ? const Text('Нет постера')
+                                      : kIsWeb
+                                      ? Image.network(poster!.path)
+                                      : Image.file(File(poster!.path)),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
 
                       ],
                     ),
                   ],
 
-                  // place tab
+                  // таб "место и время"
 
                   [
                     const AddCasePageTitle(title: 'Место и время'),
@@ -520,7 +501,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                     ),
                   ],
 
-                  // entry fee tab
+                  // таб "стоимость"
 
                   [
                     const AddCasePageTitle(title: 'Стоимость'),
@@ -531,6 +512,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                       // padding: const EdgeInsets.symmetric(horizontal: 16),
                       children: [
 
+                        // стоимость (тип)
                         Bric(
                           size: const {
                             BrickWidth.sm: 3,
@@ -574,6 +556,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                           ),
                         ),
 
+                        // ссылка
                         Bric(
                           size: const {
                             BrickWidth.sm: 13,
@@ -590,6 +573,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                           ),
                         ),
 
+                        // стоимость (руб)
                         if (_entryFee == 'charge') Bric(
                           size: const {
                             BrickWidth.sm: 5,
@@ -631,6 +615,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                           ),
                         ),
 
+                        // комментарий о входе
                         Bric(
                           size: const {
                             BrickWidth.sm: 8,
@@ -650,11 +635,12 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                     ),
                   ],
 
-                  // артисты и жанры
+                  // таб "артисты и жанры"
 
                   [
                     const AddCasePageTitle(title: 'Артисты и жанры'),
 
+                    // жанры
                     Bric(
                       child: Chiper(
                         labelText: 'Жанры',
