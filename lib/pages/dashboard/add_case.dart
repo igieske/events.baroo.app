@@ -308,9 +308,10 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                       // padding: const EdgeInsets.symmetric(horizontal: 16),
                       children: [
 
+                        // место
                         Bric(
                           size: const {
-                            BrickWidth.sm: 5,
+                            BrickWidth.sm: 6,
                           },
                           builder: (context, bricWidth) {
                             return Autocomplete<Bar>(
@@ -385,6 +386,20 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                           },
                         ),
 
+                        // уточнение о локации
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 6,
+                          },
+                          child: TextFormField(
+                            controller: _placeDetailsCtrl,
+                            decoration: const InputDecoration(
+                              label: Text('Уточнение о локации'),
+                            ),
+                          ),
+                        ),
+
+                        // дата
                         Bric(
                           size: const {
                             BrickWidth.sm: 3,
@@ -424,31 +439,10 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                           ),
                         ),
 
+                        // время начало
                         Bric(
                           size: const {
-                            BrickWidth.sm: 2,
-                          },
-                          child: TextFormField(
-                            controller: _timeEntryCtrl,
-                            decoration: const InputDecoration(
-                              prefixIcon: Icon(Icons.access_time),
-                              label: Text('Двери'),
-                              counterText: '',
-                            ),
-                            maxLength: 5,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              MaskedInputFormatter('##:##',
-                                  allowedCharMatcher: RegExp(r'[0-9]')
-                              ),
-                            ],
-                            validator: timeTextValidator,
-                          ),
-                        ),
-
-                        Bric(
-                          size: const {
-                            BrickWidth.sm: 2,
+                            BrickWidth.sm: 3,
                           },
                           child: TextFormField(
                             controller: _timeStartCtrl,
@@ -468,15 +462,26 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                           ),
                         ),
 
+                        // время двери
                         Bric(
                           size: const {
-                            BrickWidth.sm: 4,
+                            BrickWidth.sm: 3,
                           },
                           child: TextFormField(
-                            controller: _placeDetailsCtrl,
+                            controller: _timeEntryCtrl,
                             decoration: const InputDecoration(
-                              label: Text('Уточнение о локации'),
+                              prefixIcon: Icon(Icons.access_time),
+                              label: Text('Двери'),
+                              counterText: '',
                             ),
+                            maxLength: 5,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              MaskedInputFormatter('##:##',
+                                  allowedCharMatcher: RegExp(r'[0-9]')
+                              ),
+                            ],
+                            validator: timeTextValidator,
                           ),
                         ),
 
