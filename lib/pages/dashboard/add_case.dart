@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
@@ -43,7 +44,6 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
 
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _shortDescriptionCtrl = TextEditingController();
-  final TextEditingController _descriptionCtrl = TextEditingController();
   final TextEditingController _sourcesCtrl = TextEditingController();
 
   XFile? poster;
@@ -56,6 +56,8 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
 
   final TextEditingController _ticketsLinkCtrl = TextEditingController();
 
+  final QuillController _descriptionCtrl = QuillController.basic();
+
 
   @override
   void initState() {
@@ -67,6 +69,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
   @override
   void dispose() {
     _tabController.dispose();
+    _descriptionCtrl.dispose();
     super.dispose();
   }
 
@@ -211,14 +214,66 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
 
                                   const SizedBox(height: 6),
 
-                                  TextFormField(
-                                    controller: _descriptionCtrl,
-                                    decoration: const InputDecoration(
-                                      label: Text('Подробное описание'),
+                                  // подробное описание
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
-                                    maxLength: 1200,
-                                    minLines: 3,
-                                    maxLines: 20,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        QuillSimpleToolbar(
+                                          controller: _descriptionCtrl,
+                                          configurations: const QuillSimpleToolbarConfigurations(
+                                            sectionDividerColor: Color(0xFFDEDEDE),
+                                            toolbarIconAlignment: WrapAlignment.start,
+                                            showBackgroundColorButton: false,
+                                            showClipboardCopy: false,
+                                            showClipboardPaste: false,
+                                            showClipboardCut: false,
+                                            showListCheck: false,
+                                            showListNumbers: false,
+                                            showSubscript: false,
+                                            showSuperscript: false,
+                                            showColorButton: false,
+                                            showStrikeThrough: false,
+                                            showFontSize: false,
+                                            showFontFamily: false,
+                                            showSearchButton: false,
+                                            showIndent: false,
+                                            showUndo: false,
+                                            showRedo: false,
+                                            showHeaderStyle: false,
+                                            showCodeBlock: false,
+                                            showInlineCode: false,
+                                          ),
+                                        ),
+                                        const Divider(height: 2, color: Color(0xFFDEDEDE)),
+                                        QuillEditor.basic(
+                                          controller: _descriptionCtrl,
+                                          configurations: const QuillEditorConfigurations(
+                                            minHeight: 150,
+                                            maxHeight: 500,
+                                            padding: EdgeInsets.all(12),
+                                            placeholder: 'Подробное описание',
+                                            showCursor: true,
+                                            customStyles: DefaultStyles(
+                                              placeHolder: DefaultTextBlockStyle(
+                                                TextStyle(
+                                                  color: Color(0xFF909090),
+                                                  fontSize: 16,
+                                                ),
+                                                HorizontalSpacing(0, 0),
+                                                VerticalSpacing(0, 0),
+                                                VerticalSpacing(0, 0),
+                                                BoxDecoration(),
+                                              )
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
 
                                 ],
