@@ -177,64 +177,70 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                         ),
 
                         // подробное описание
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              QuillSimpleToolbar(
-                                controller: _descriptionCtrl,
-                                configurations: const QuillSimpleToolbarConfigurations(
-                                  sectionDividerColor: Color(0xFFDEDEDE),
-                                  toolbarIconAlignment: WrapAlignment.start,
-                                  showBackgroundColorButton: false,
-                                  showClipboardCopy: false,
-                                  showClipboardPaste: false,
-                                  showClipboardCut: false,
-                                  showListCheck: false,
-                                  showListNumbers: false,
-                                  showSubscript: false,
-                                  showSuperscript: false,
-                                  showColorButton: false,
-                                  showStrikeThrough: false,
-                                  showFontSize: false,
-                                  showFontFamily: false,
-                                  showSearchButton: false,
-                                  showIndent: false,
-                                  showUndo: false,
-                                  showRedo: false,
-                                  showHeaderStyle: false,
-                                  showCodeBlock: false,
-                                  showInlineCode: false,
-                                ),
-                              ),
-                              const Divider(height: 2, color: Color(0xFFDEDEDE)),
-                              QuillEditor.basic(
-                                controller: _descriptionCtrl,
-                                configurations: const QuillEditorConfigurations(
-                                  minHeight: 150,
-                                  maxHeight: 500,
-                                  padding: EdgeInsets.all(12),
-                                  placeholder: 'Подробное описание',
-                                  showCursor: true,
-                                  customStyles: DefaultStyles(
-                                    placeHolder: DefaultTextBlockStyle(
-                                      TextStyle(
-                                        color: Color(0xFF909090),
-                                        fontSize: 16,
-                                      ),
-                                      HorizontalSpacing(0, 0),
-                                      VerticalSpacing(0, 0),
-                                      VerticalSpacing(0, 0),
-                                      BoxDecoration(),
-                                    )
+                        Bric(
+                          size: const {
+                            BrickWidth.sm: 8,
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                QuillSimpleToolbar(
+                                  controller: _descriptionCtrl,
+                                  configurations: const QuillSimpleToolbarConfigurations(
+                                    sectionDividerColor: Color(0xFFDEDEDE),
+                                    toolbarIconAlignment: WrapAlignment.start,
+                                    toolbarSize: 28,
+                                    showBackgroundColorButton: false,
+                                    showClipboardCopy: false,
+                                    showClipboardPaste: false,
+                                    showClipboardCut: false,
+                                    showListCheck: false,
+                                    showListNumbers: false,
+                                    showSubscript: false,
+                                    showSuperscript: false,
+                                    showColorButton: false,
+                                    showStrikeThrough: false,
+                                    showFontSize: false,
+                                    showFontFamily: false,
+                                    showSearchButton: false,
+                                    showIndent: false,
+                                    showUndo: false,
+                                    showRedo: false,
+                                    showHeaderStyle: false,
+                                    showCodeBlock: false,
+                                    showInlineCode: false,
                                   ),
                                 ),
-                              ),
-                            ],
+                                const Divider(height: 0, color: Color(0xFFDEDEDE)),
+                                QuillEditor.basic(
+                                  controller: _descriptionCtrl,
+                                  configurations: const QuillEditorConfigurations(
+                                    minHeight: 160,
+                                    maxHeight: 500,
+                                    padding: EdgeInsets.all(12),
+                                    placeholder: 'Подробное описание',
+                                    showCursor: true,
+                                    customStyles: DefaultStyles(
+                                      placeHolder: DefaultTextBlockStyle(
+                                        TextStyle(
+                                          color: Color(0xFF909090),
+                                          fontSize: 16,
+                                        ),
+                                        HorizontalSpacing(0, 0),
+                                        VerticalSpacing(0, 0),
+                                        VerticalSpacing(0, 0),
+                                        BoxDecoration(),
+                                      )
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
 
@@ -290,7 +296,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(5),
                                 ),
-                                constraints: const BoxConstraints(minHeight: 180),
+                                constraints: const BoxConstraints(minHeight: 200),
                                 clipBehavior: Clip.hardEdge,
                                 child: Center(
                                   child: poster == null
