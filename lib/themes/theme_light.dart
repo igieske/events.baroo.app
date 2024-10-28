@@ -29,6 +29,7 @@ ThemeData appThemeLight = ThemeData(
         overflow: TextOverflow.ellipsis,
     ),
     helperStyle: TextStyle(color: Color(0xFF808080)),
+    hoverColor: Colors.transparent,
   ),
 
 );
