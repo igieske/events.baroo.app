@@ -300,7 +300,17 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                                 clipBehavior: Clip.hardEdge,
                                 child: Center(
                                   child: poster == null
-                                      ? const Text('Нет постера')
+                                      ? const Column(
+                                        children: [
+                                          Icon(
+                                            Icons.add_photo_alternate_outlined,
+                                            color: Color(0xFFE6E6E6),
+                                            size: 40,
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text('Нет постера'),
+                                        ],
+                                      )
                                       : kIsWeb
                                       ? Image.network(poster!.path)
                                       : Image.file(File(poster!.path)),
