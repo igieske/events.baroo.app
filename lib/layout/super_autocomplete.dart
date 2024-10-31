@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 
 
 class SuperAutocomplete<T extends Object> extends StatefulWidget {
-  final TextEditingController? controller;
   final List<T> options;
   final T? initialValue;
   final double maxWidth;
@@ -14,7 +13,6 @@ class SuperAutocomplete<T extends Object> extends StatefulWidget {
 
   const SuperAutocomplete({
     super.key,
-    this.controller,
     required this.options,
     this.initialValue,
     required this.maxWidth,
@@ -29,20 +27,21 @@ class SuperAutocomplete<T extends Object> extends StatefulWidget {
 }
 
 class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<T>> {
-  late TextEditingController _controller;
-  late bool _isSelected;
+  TextEditingController _controller = TextEditingController();
+  late bool _controllerIsSet;
+  T? value;
 
   void _clear(TextEditingController? controller) {
-    (controller ?? _controller).clear();
-    setState(() => _isSelected = false);
+    _controller.clear();
+    setState(() => value = null);
     widget.onCleared();
   }
 
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ?? TextEditingController();
-    _isSelected = widget.initialValue != null;
+    _controllerIsSet = false;
+    value = widget.initialValue;
   }
 
   @override
@@ -53,6 +52,7 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
 
   @override
   Widget build(BuildContext context) {
+    final bool hasValue = value != null;
     return Autocomplete<T>(
       // todo
       // initialValue: ,
@@ -81,14 +81,8 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
                 itemBuilder: (BuildContext context, int index) {
                   final T option = options.elementAt(index);
                   return InkWell(
-                    onTap: () {
-                      print('onTap!');
-                      // _controller.text = widget.displayStringForOption(option);
-
-                      // передаём в onSelected
-                      onSelected(option);
-
-                    },
+                    // тап опции → передаём в onSelected
+                    onTap: () => onSelected(option),
                     child: Builder(
                       builder: (BuildContext context) {
                         // todo: hover цвет не делать для мобилы
@@ -115,53 +109,57 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
         );
       },
       fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+        if (!_controllerIsSet) {
+          _controller = controller;
+          _controllerIsSet = true;
+        }
         return TextField(
-          controller: controller,
+          controller: _controller,
           focusNode: focusNode,
           decoration: InputDecoration(
             labelText: widget.hintText,
-            prefix: _isSelected ? Container(
+
+            floatingLabelBehavior: hasValue
+              ? FloatingLabelBehavior.always
+              : FloatingLabelBehavior.auto,
+
+            // аватарка
+            prefixIcon: !hasValue ? null : Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Container(
+                // todo: аватарка
+                color: Colors.green,
+                width: 48,
+                height: 48,
+              ),
+            ),
+
+            // выбранное
+            prefix: !hasValue ? null : Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 borderRadius: BorderRadius.circular(4),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-              child: Text(controller.text),
-            ) : null,
-            suffixIcon: _isSelected
-              ? IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () => _clear(controller),
-              )
-              : null,
+              child: Text(widget.displayStringForOption(value!)),
+            ),
+
+            // крестик
+            suffixIcon: !hasValue ? null : IconButton(
+              icon: const Icon(Icons.clear),
+              onPressed: () => _clear(_controller),
+            ),
+
           ),
-          readOnly: _isSelected,
-          onSubmitted: (value) {
-            print('onSubmitted: $value');
-
-            // if (!widget.options.any((T option) => widget.displayStringForOption(option) == value)) {
-            //   // controller.clear();
-            //   widget.onCleared();
-            // }
-
-            // при нажатии Enter – происходит сабмит
-            // если опция выбрана - кидает в onSelect
-            onFieldSubmitted();
-          },
+          readOnly: value != null,
+          // нажатие enter
+          onSubmitted: (value) => onFieldSubmitted(),
         );
       },
       onSelected: (T selectedValue) {
-
-
+        setState(() => value = selectedValue);
         _controller.clear();
-        _controller.text = '';
-
-
-        _controller.value = const TextEditingValue(text: '');
-        print('onSelected! ${selectedValue.toString()}');
         widget.onSelected(selectedValue);
-
-        setState(() => _isSelected = true);
       },
     );
   }
