@@ -11,6 +11,7 @@ import 'package:collection/collection.dart';
 
 import 'package:baroo/layout/bric.dart';
 import 'package:baroo/layout/chiper.dart';
+import 'package:baroo/layout/super_autocomplete.dart';
 import 'package:baroo/models/artist.dart';
 import 'package:baroo/models/case_type.dart';
 import 'package:baroo/models/bar.dart';
@@ -59,6 +60,8 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
 
   final QuillController _descriptionCtrl = QuillController.basic();
 
+  // final SuperAutocompleteController<Artist> _artistsCtrl = SuperAutocompleteController<Artist>();
+  TextEditingController _artistsCtrl = TextEditingController();
 
   @override
   void initState() {
@@ -691,70 +694,17 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                             BrickWidth.sm: 6,
                           },
                           builder: (context, bricWidth) {
-                            return Autocomplete<Artist>(
+                            return SuperAutocomplete<Artist>(
+                              options: dict.artists,
+                              maxWidth: bricWidth,
+                              hintText: 'Артист',
                               displayStringForOption: (Artist artist) => artist.name,
-                              optionsBuilder: (TextEditingValue textEditingValue) {
-                                if (textEditingValue.text.length < 2) {
-                                  return const Iterable<Artist>.empty();
-                                }
-                                return dict.artists.where((Artist artist) => artist.name.toLowerCase()
-                                    .contains(textEditingValue.text.toLowerCase()));
+                              onSelected: (Artist selectedArtist) {
+                                print('Selected: ${selectedArtist.name} with id: ${selectedArtist.id}');
                               },
-                              optionsViewBuilder: (BuildContext context,
-                                  AutocompleteOnSelected<Artist> onSelected,
-                                  Iterable<Artist> options) {
-                                return Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Material(
-                                    elevation: 4.0,
-                                    child: ConstrainedBox(
-                                      constraints: BoxConstraints(maxWidth: bricWidth),
-                                      child: ListView.builder(
-                                        padding: EdgeInsets.zero,
-                                        shrinkWrap: true,
-                                        itemCount: options.length,
-                                        itemBuilder: (BuildContext context, int index) {
-                                          final Artist artist = options.elementAt(index);
-                                          return InkWell(
-                                            onTap: () => onSelected(artist),
-                                            child: Builder(
-                                                builder: (BuildContext context) {
-                                                  final bool highlight = AutocompleteHighlightedOption.of(context) == index;
-                                                  if (highlight) {
-                                                    SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
-                                                      Scrollable.ensureVisible(context, alignment: 0.5);
-                                                    });
-                                                  }
-                                                  return Container(
-                                                    color: highlight ? Theme.of(context).focusColor : null,
-                                                    padding: const EdgeInsets.all(16.0),
-                                                    child: Text(
-                                                      RawAutocomplete.defaultStringForOption(artist.name),
-                                                    ),
-                                                  );
-                                                }
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
-                                return TextField(
-                                  controller: controller,
-                                  focusNode: focusNode,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Артисты',
-                                  ),
-                                  onSubmitted: (value) => onFieldSubmitted(),
-                                );
-                              },
-                              onSelected: (Artist selection) {
-                                print('Выбрано: ${selection.name}, ID: ${selection.id}');
-                              },
-
+                              onCleared: () {
+                                print('Cleared');
+                              }
                             );
                           },
                         ),
