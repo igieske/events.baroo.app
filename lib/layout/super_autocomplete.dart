@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import '../models/artist.dart';
+
 
 class SuperAutocomplete<T extends Object> extends StatefulWidget {
   final List<T> options;
@@ -135,13 +137,23 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
             ),
 
             // выбранное
-            prefix: !hasValue ? null : Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-              child: Text(widget.displayStringForOption(value!)),
+            prefix: !hasValue ? null : Row(
+              children: [
+                Icon(
+                  value is Fella ? Icons.person : Icons.group,
+                  size: 18,
+                  color: Theme.of(context).inputDecorationTheme.labelStyle?.color,
+                ),
+                const SizedBox(width: 4),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                  child: Text(widget.displayStringForOption(value!)),
+                ),
+              ],
             ),
 
             // крестик
