@@ -31,11 +31,11 @@ class SuperAutocomplete<T extends Object> extends StatefulWidget {
 class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<T>> {
   TextEditingController _controller = TextEditingController();
   late bool _controllerIsSet;
-  T? value;
+  T? _value;
 
   void _clear(TextEditingController? controller) {
+    setState(() => _value = null);
     _controller.clear();
-    setState(() => value = null);
     widget.onCleared();
   }
 
@@ -43,7 +43,7 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
   void initState() {
     super.initState();
     _controllerIsSet = false;
-    value = widget.initialValue;
+    _value = widget.initialValue;
   }
 
   @override
@@ -54,19 +54,20 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
 
   @override
   Widget build(BuildContext context) {
-    final bool hasValue = value != null;
+    final bool hasValue = _value != null;
     return Autocomplete<T>(
-      // todo
-      // initialValue: ,
       displayStringForOption: widget.displayStringForOption,
+
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text.length < 2) {
           return Iterable<T>.empty();
         }
+        // todo: ограничивать max кол-во в списке (перебирать не все опции)
         return widget.options.where((T option) => widget.displayStringForOption(option)
             .toLowerCase()
             .contains(textEditingValue.text.toLowerCase()));
       },
+
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<T> onSelected,
           Iterable<T> options) {
@@ -137,23 +138,33 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
             ),
 
             // выбранное
-            prefix: !hasValue ? null : Row(
-              children: [
-                Icon(
-                  value is Fella ? Icons.person : Icons.group,
-                  size: 18,
-                  color: Theme.of(context).inputDecorationTheme.labelStyle?.color,
-                ),
-                const SizedBox(width: 4),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainer,
-                    borderRadius: BorderRadius.circular(4),
+            prefix: !hasValue ? null : Container(
+              constraints: BoxConstraints(maxWidth: widget.maxWidth - 48 - 55),
+              clipBehavior: Clip.hardEdge,
+              decoration: const BoxDecoration(),
+              child: Row(
+                children: [
+                  Icon(
+                    _value is Fella ? Icons.person : Icons.group,
+                    size: 18,
+                    color: Theme.of(context).inputDecorationTheme.labelStyle?.color,
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-                  child: Text(widget.displayStringForOption(value!)),
-                ),
-              ],
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                      child: Text(
+                        widget.displayStringForOption(_value!),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
 
             // крестик
@@ -163,13 +174,13 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
             ),
 
           ),
-          readOnly: value != null,
+          readOnly: hasValue,
           // нажатие enter
           onSubmitted: (value) => onFieldSubmitted(),
         );
       },
       onSelected: (T selectedValue) {
-        setState(() => value = selectedValue);
+        setState(() => _value = selectedValue);
         _controller.clear();
         widget.onSelected(selectedValue);
       },
