@@ -161,7 +161,10 @@ class ChiperChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-      child: Text(label),
+      child: Text(label, style: const TextStyle(
+        fontSize: 14,
+        height: 1.25,
+      )),
     );
   }
 }
