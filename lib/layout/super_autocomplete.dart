@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../models/artist.dart';
+import 'package:baroo/layout/chiper.dart';
+import 'package:baroo/models/artist.dart';
 
 
 class SuperAutocomplete<T extends Object> extends StatefulWidget {
@@ -151,17 +152,7 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
                   ),
                   const SizedBox(width: 5),
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-                      child: Text(
-                        widget.displayStringForOption(_value!),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+                    child: ChiperChip(label: widget.displayStringForOption(_value!)),
                   ),
                 ],
               ),
