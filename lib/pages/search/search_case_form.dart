@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import 'package:baroo/services/local_storage/local_storage_bloc.dart' as local_storage_bloc;
-import 'package:baroo/models/case_type.dart';
-import 'package:baroo/models/case_genre.dart';
-import 'package:baroo/services/constants.dart';
+import 'package:events_baroo_app/services/local_storage/local_storage_bloc.dart' as local_storage_bloc;
+import 'package:events_baroo_app/models/case_type.dart';
+import 'package:events_baroo_app/models/case_genre.dart';
+import 'package:events_baroo_app/services/constants.dart';
 
 
 class SearchCaseForm extends StatefulWidget {
@@ -48,10 +48,11 @@ class SearchCaseFormState extends State<SearchCaseForm> {
       args['dates'] = dateStartFormat +
           (dateStartFormat != dateEndFormat ? '_$dateEndFormat' : '');
     }
+    // todo
     // типы кейсов
-    if (caseTypes.length != formCaseTypes.length) {
-      args['case_types'] = formCaseTypes.map((item) => item.slug);
-    }
+    // if (caseTypes.length != formCaseTypes.length) {
+    //   args['case_types'] = formCaseTypes.map((item) => item.slug);
+    // }
     // todo: жанры
     return args;
   }
@@ -82,7 +83,8 @@ class SearchCaseFormState extends State<SearchCaseForm> {
         print('----');
         print(state.data);
 
-        formCaseTypes = List.from(caseTypes);
+        // todo
+        // formCaseTypes = List.from(caseTypes);
         formCaseGenres = List.from(caseGenres);
 
         return Column(
@@ -153,25 +155,26 @@ class SearchCaseFormState extends State<SearchCaseForm> {
 
                   const SizedBox(height: 20),
 
-                  const Text('Тип события'),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 6,
-                    children: caseTypes.map((CaseType caseType) {
-                      final bool isOn = formCaseTypes.contains(caseType);
-                      return FilledButton.tonal(
-                        onPressed: () => setState(() {
-                          if (isOn) {
-                            formCaseTypes.removeWhere((item) => item == caseType);
-                          } else {
-                            formCaseTypes.add(caseType);
-                          }
-                        }),
-                        style: isOn ? _selectedButtonStyle : null,
-                        child: Text(caseType.label),
-                      );
-                    }).toList(),
-                  ),
+                  // todo
+                  // const Text('Тип события'),
+                  // const SizedBox(height: 10),
+                  // Wrap(
+                  //   spacing: 6,
+                  //   children: caseTypes.map((CaseType caseType) {
+                  //     final bool isOn = formCaseTypes.contains(caseType);
+                  //     return FilledButton.tonal(
+                  //       onPressed: () => setState(() {
+                  //         if (isOn) {
+                  //           formCaseTypes.removeWhere((item) => item == caseType);
+                  //         } else {
+                  //           formCaseTypes.add(caseType);
+                  //         }
+                  //       }),
+                  //       style: isOn ? _selectedButtonStyle : null,
+                  //       child: Text(caseType.name),
+                  //     );
+                  //   }).toList(),
+                  // ),
 
                   const SizedBox(height: 20),
 
