@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import 'package:baroo/layout/chiper.dart';
-import 'package:baroo/models/artist.dart';
+import 'package:events_baroo_app/layout/chiper.dart';
+import 'package:events_baroo_app/models/artist.dart';
 
 
 class SuperAutocomplete<T extends Object> extends StatefulWidget {
@@ -11,6 +11,7 @@ class SuperAutocomplete<T extends Object> extends StatefulWidget {
   final double maxWidth;
   final String hintText;
   final String Function(T) displayStringForOption;
+  final String? Function(T) imageUrlForOption;
   final void Function(T) onSelected;
   final void Function() onCleared;
 
@@ -21,6 +22,7 @@ class SuperAutocomplete<T extends Object> extends StatefulWidget {
     required this.maxWidth,
     required this.hintText,
     required this.displayStringForOption,
+    required this.imageUrlForOption,
     required this.onSelected,
     required this.onCleared,
   });
@@ -30,13 +32,13 @@ class SuperAutocomplete<T extends Object> extends StatefulWidget {
 }
 
 class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<T>> {
-  TextEditingController _controller = TextEditingController();
+  TextEditingController? _controller;
   late bool _controllerIsSet;
   T? _value;
 
   void _clear(TextEditingController? controller) {
     setState(() => _value = null);
-    _controller.clear();
+    _controller?.clear();
     widget.onCleared();
   }
 
@@ -45,11 +47,13 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
     super.initState();
     _controllerIsSet = false;
     _value = widget.initialValue;
+    _controller = TextEditingController();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
+    _controller = null;
     super.dispose();
   }
 
@@ -117,6 +121,7 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
           _controller = controller;
           _controllerIsSet = true;
         }
+        final String? imageUrl = _value != null ? widget.imageUrlForOption(_value!) : null;
         return TextField(
           controller: _controller,
           focusNode: focusNode,
@@ -132,9 +137,15 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
               padding: const EdgeInsets.only(right: 12),
               child: Container(
                 // todo: аватарка
-                color: Colors.green,
                 width: 48,
                 height: 48,
+                child: imageUrl != null ? Image.network(
+                  'https://baroo.ru/wp-content/uploads/XlLKEPudtR8-aspect-ratio-1-1-150x150.jpg',
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                    print(error.toString());
+                    return Text('Error loading image');
+                  },
+                ) : null,
               ),
             ),
 
@@ -165,6 +176,7 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
             ),
 
           ),
+          // todo: проверить, или: _value != null
           readOnly: hasValue,
           // нажатие enter
           onSubmitted: (value) => onFieldSubmitted(),
@@ -172,7 +184,7 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
       },
       onSelected: (T selectedValue) {
         setState(() => _value = selectedValue);
-        _controller.clear();
+        _controller?.clear();
         widget.onSelected(selectedValue);
       },
     );

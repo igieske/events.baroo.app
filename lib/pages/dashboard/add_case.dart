@@ -4,21 +4,21 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+// import 'package:flutter_quill/flutter_quill.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 
-import 'package:baroo/layout/bric.dart';
-import 'package:baroo/layout/chiper.dart';
-import 'package:baroo/layout/super_autocomplete.dart';
-import 'package:baroo/models/artist.dart';
-import 'package:baroo/models/case_type.dart';
-import 'package:baroo/models/bar.dart';
-import 'package:baroo/services/dict/dict_cubit.dart';
-import 'package:baroo/services/validators/time_validator.dart';
-import 'package:baroo/services/validators/date_validator.dart';
-import 'package:baroo/services/validators/url_validator.dart';
+import 'package:events_baroo_app/layout/bric.dart';
+import 'package:events_baroo_app/layout/chiper.dart';
+import 'package:events_baroo_app/layout/super_autocomplete.dart';
+import 'package:events_baroo_app/models/artist.dart';
+import 'package:events_baroo_app/models/case_type.dart';
+import 'package:events_baroo_app/models/bar.dart';
+import 'package:events_baroo_app/services/dict/dict_cubit.dart';
+import 'package:events_baroo_app/services/validators/time_validator.dart';
+import 'package:events_baroo_app/services/validators/date_validator.dart';
+import 'package:events_baroo_app/services/validators/url_validator.dart';
 
 
 class AddCasePage extends StatefulWidget {
@@ -58,10 +58,8 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
 
   final TextEditingController _ticketsLinkCtrl = TextEditingController();
 
-  final QuillController _descriptionCtrl = QuillController.basic();
+  // final QuillController _descriptionCtrl = QuillController.basic();
 
-  // final SuperAutocompleteController<Artist> _artistsCtrl = SuperAutocompleteController<Artist>();
-  TextEditingController _artistsCtrl = TextEditingController();
 
   @override
   void initState() {
@@ -73,7 +71,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
   @override
   void dispose() {
     _tabController.dispose();
-    _descriptionCtrl.dispose();
+    // _descriptionCtrl.dispose();
     super.dispose();
   }
 
@@ -193,56 +191,56 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                QuillSimpleToolbar(
-                                  controller: _descriptionCtrl,
-                                  configurations: const QuillSimpleToolbarConfigurations(
-                                    sectionDividerColor: Color(0xFFDEDEDE),
-                                    toolbarIconAlignment: WrapAlignment.start,
-                                    toolbarSize: 28,
-                                    showBackgroundColorButton: false,
-                                    showClipboardCopy: false,
-                                    showClipboardPaste: false,
-                                    showClipboardCut: false,
-                                    showListCheck: false,
-                                    showListNumbers: false,
-                                    showSubscript: false,
-                                    showSuperscript: false,
-                                    showColorButton: false,
-                                    showStrikeThrough: false,
-                                    showFontSize: false,
-                                    showFontFamily: false,
-                                    showSearchButton: false,
-                                    showIndent: false,
-                                    showUndo: false,
-                                    showRedo: false,
-                                    showHeaderStyle: false,
-                                    showCodeBlock: false,
-                                    showInlineCode: false,
-                                  ),
-                                ),
+                                // QuillSimpleToolbar(
+                                //   controller: _descriptionCtrl,
+                                //   configurations: const QuillSimpleToolbarConfigurations(
+                                //     sectionDividerColor: Color(0xFFDEDEDE),
+                                //     toolbarIconAlignment: WrapAlignment.start,
+                                //     toolbarSize: 28,
+                                //     showBackgroundColorButton: false,
+                                //     showClipboardCopy: false,
+                                //     showClipboardPaste: false,
+                                //     showClipboardCut: false,
+                                //     showListCheck: false,
+                                //     showListNumbers: false,
+                                //     showSubscript: false,
+                                //     showSuperscript: false,
+                                //     showColorButton: false,
+                                //     showStrikeThrough: false,
+                                //     showFontSize: false,
+                                //     showFontFamily: false,
+                                //     showSearchButton: false,
+                                //     showIndent: false,
+                                //     showUndo: false,
+                                //     showRedo: false,
+                                //     showHeaderStyle: false,
+                                //     showCodeBlock: false,
+                                //     showInlineCode: false,
+                                //   ),
+                                // ),
                                 const Divider(height: 0, color: Color(0xFFDEDEDE)),
-                                QuillEditor.basic(
-                                  controller: _descriptionCtrl,
-                                  configurations: const QuillEditorConfigurations(
-                                    minHeight: 160,
-                                    maxHeight: 500,
-                                    padding: EdgeInsets.all(12),
-                                    placeholder: 'Подробное описание',
-                                    showCursor: true,
-                                    customStyles: DefaultStyles(
-                                      placeHolder: DefaultTextBlockStyle(
-                                        TextStyle(
-                                          color: Color(0xFF909090),
-                                          fontSize: 16,
-                                        ),
-                                        HorizontalSpacing(0, 0),
-                                        VerticalSpacing(0, 0),
-                                        VerticalSpacing(0, 0),
-                                        BoxDecoration(),
-                                      )
-                                    ),
-                                  ),
-                                ),
+                                // QuillEditor.basic(
+                                //   controller: _descriptionCtrl,
+                                //   configurations: const QuillEditorConfigurations(
+                                //     minHeight: 160,
+                                //     maxHeight: 500,
+                                //     padding: EdgeInsets.all(12),
+                                //     placeholder: 'Подробное описание',
+                                //     showCursor: true,
+                                //     customStyles: DefaultStyles(
+                                //       placeHolder: DefaultTextBlockStyle(
+                                //         TextStyle(
+                                //           color: Color(0xFF909090),
+                                //           fontSize: 16,
+                                //         ),
+                                //         HorizontalSpacing(0, 0),
+                                //         VerticalSpacing(0, 0),
+                                //         VerticalSpacing(0, 0),
+                                //         BoxDecoration(),
+                                //       )
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
@@ -699,6 +697,7 @@ class _AddCasePageState extends State<AddCasePage> with TickerProviderStateMixin
                               maxWidth: bricWidth,
                               hintText: 'Артист',
                               displayStringForOption: (Artist artist) => artist.name,
+                              imageUrlForOption: (Artist artist) => artist.avatarUrl,
                               onSelected: (Artist selectedArtist) {
                                 print('Selected: ${selectedArtist.name} with id: ${selectedArtist.id}');
                               },
