@@ -8,14 +8,14 @@ import 'package:events_baroo_app/services/functions.dart';
 import 'package:events_baroo_app/pages/login/login_http.dart';
 
 
-class DrawerMenu extends StatefulWidget {
-  const DrawerMenu({super.key});
+class AppScaffoldDrawer extends StatefulWidget {
+  const AppScaffoldDrawer({super.key});
 
   @override
-  State<DrawerMenu> createState() => _DrawerMenuState();
+  State<AppScaffoldDrawer> createState() => _AppScaffoldDrawerState();
 }
 
-class _DrawerMenuState extends State<DrawerMenu> {
+class _AppScaffoldDrawerState extends State<AppScaffoldDrawer> {
   bool userIsLoggedIn = false;
   String userName = '';
 
