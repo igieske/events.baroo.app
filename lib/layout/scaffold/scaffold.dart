@@ -77,6 +77,7 @@ class _AppScaffoldState extends State<AppScaffold> {
             leading: const Center(child: Text('b')),
             title: Text(_selectedTab.title),
             elevation: _selectedTab.name != 'contacts' ? 4 : 0,
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
 
           body: PageView(
