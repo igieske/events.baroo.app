@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import 'package:baroo/models/bar.dart';
-import 'package:baroo/models/genre.dart';
-import 'package:baroo/models/artist.dart';
-import 'package:baroo/models/case_type.dart';
+import 'package:events_baroo_app/models/bar.dart';
+import 'package:events_baroo_app/models/genre.dart';
+import 'package:events_baroo_app/models/artist.dart';
+import 'package:events_baroo_app/models/case_type.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -34,6 +34,8 @@ class DictCubit extends Cubit<DictState> {
       List<Genre> genres = [];
       List<CaseType> caseTypes = [];
 
+      Map<String, dynamic> avatars = {};
+
       for (final dict in data.entries) {
         switch (dict.key) {
           case 'bars':
@@ -43,12 +45,12 @@ class DictCubit extends Cubit<DictState> {
             break;
           case 'bands':
             bands = (dict.value as List)
-                .map((band) => Band.fromJson(band))
+                .map((band) => Band.fromJson(band, avatars[band['id']]))
                 .toList();
             break;
           case 'fellas':
             fellas = (dict.value as List)
-                .map((fella) => Fella.fromJson(fella))
+                .map((fella) => Fella.fromJson(fella, avatars[fella['id']]))
                 .toList();
             break;
           case 'genres':
@@ -60,6 +62,9 @@ class DictCubit extends Cubit<DictState> {
             caseTypes = (dict.value as List)
                 .map((type) => CaseType.fromJson(type))
                 .toList();
+            break;
+          case 'avatars':
+            avatars = Map.from(dict.value);
             break;
           default:
             print('Unknown dictionary type: ${dict.key}');
