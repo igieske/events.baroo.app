@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:baroo/layout/scaffold/scaffold.dart';
-import 'package:baroo/pages/login/login.dart';
-import 'package:baroo/pages/search/search.dart';
+import 'package:events_baroo_app/layout/scaffold/scaffold.dart';
+import 'package:events_baroo_app/pages/login/login.dart';
+import 'package:events_baroo_app/pages/search/search.dart';
 
-import 'package:baroo/pages/home/home.dart';
-import 'package:baroo/pages/cases.dart';
-import 'package:baroo/pages/bars.dart';
-import 'package:baroo/pages/dashboard/add_case.dart';
+import 'package:events_baroo_app/pages/home/home.dart';
+import 'package:events_baroo_app/pages/cases.dart';
+import 'package:events_baroo_app/pages/bars.dart';
+import 'package:events_baroo_app/pages/dashboard/add_case.dart';
 
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');

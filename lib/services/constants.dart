@@ -1,8 +1,7 @@
 // константы
 
-import 'package:baroo/models/post_type.dart';
-import 'package:baroo/models/case_type.dart';
-import 'package:baroo/models/case_genre.dart';
+import 'package:events_baroo_app/models/post_type.dart';
+import 'package:events_baroo_app/models/case_genre.dart';
 
 
 final List<PostType> postTypes = [

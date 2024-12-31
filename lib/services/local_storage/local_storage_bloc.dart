@@ -1,6 +1,7 @@
-import 'package:baroo/services/local_storage/local_storage.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+
+import 'package:events_baroo_app/services/local_storage/local_storage.dart';
 
 part 'local_storage_event.dart';
 part 'local_storage_state.dart';

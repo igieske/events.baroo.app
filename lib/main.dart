@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:baroo/layout/scaffold/scaffold_bloc.dart';
-import 'package:baroo/services/dict/dict_cubit.dart';
-import 'package:baroo/services/local_storage/local_storage_bloc.dart';
+import 'package:events_baroo_app/layout/scaffold/scaffold_bloc.dart';
+import 'package:events_baroo_app/services/dict/dict_cubit.dart';
+import 'package:events_baroo_app/services/local_storage/local_storage_bloc.dart';
 
 import 'router.dart';
 import 'themes/theme.dart';

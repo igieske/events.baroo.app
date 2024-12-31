@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:baroo/services/local_storage/local_storage_bloc.dart';
-
-import 'package:baroo/models/post_type.dart';
-import 'package:baroo/pages/search/search_case_form.dart';
+import 'package:events_baroo_app/services/local_storage/local_storage_bloc.dart';
+import 'package:events_baroo_app/models/post_type.dart';
+import 'package:events_baroo_app/pages/search/search_case_form.dart';
 
 
 class SearchPage extends StatefulWidget {

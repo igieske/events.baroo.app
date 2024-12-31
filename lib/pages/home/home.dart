@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:baroo/models/post_type.dart';
+import 'package:events_baroo_app/models/post_type.dart';
 
 
 class HomePage extends StatefulWidget {
