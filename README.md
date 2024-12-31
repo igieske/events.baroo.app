@@ -1,4 +1,4 @@
-# baroo
+# events_baroo_app
 
 Baroo Events
 
