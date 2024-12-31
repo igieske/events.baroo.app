@@ -136,16 +136,16 @@ class _SuperAutocompleteState<T extends Object> extends State<SuperAutocomplete<
             prefixIcon: !hasValue ? null : Padding(
               padding: const EdgeInsets.only(right: 12),
               child: Container(
-                // todo: аватарка
+                color: Colors.grey,
                 width: 48,
                 height: 48,
-                child: imageUrl != null ? Image.network(
-                  'https://baroo.ru/wp-content/uploads/XlLKEPudtR8-aspect-ratio-1-1-150x150.jpg',
+                child: imageUrl == null ? null : Image.network(
+                  imageUrl,
                   errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                     print(error.toString());
                     return Text('Error loading image');
                   },
-                ) : null,
+                ),
               ),
             ),
 
