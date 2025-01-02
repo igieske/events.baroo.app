@@ -16,8 +16,17 @@ class FeedCubit extends Cubit<FeedState> {
 
       final response = await Http.post('get-cases');
       final List<Case> allCases = (response as List).map((cs) {
-        return Case.fromJson(cs);
-      }).toList();
+        try {
+          return Case.fromJson(cs);
+        } catch (e) {
+          print('Ошибка парсинга кейса: $e');
+          print(cs);
+          return null;
+        }
+      })
+          .where((cs) => cs != null)
+          .cast<Case>()
+          .toList();
 
       DateTime now = DateTime.now();
 
