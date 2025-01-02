@@ -23,7 +23,7 @@ class Case {
 
   final int id;
   final String title;
-  final String date;
+  final DateTime date;
   final List<String> caseTypes;
   final bool? playlistsVk;
   final String? poster;
@@ -42,9 +42,9 @@ class Case {
 
   // конвертим json в объект Case
   factory Case.fromJson(Map<String, dynamic> json) {
-    final id = json['id'] as int;
-    final title = json['title'] as String;
-    final date = json['date'] as String;
+    final id = json['id'];
+    final title = json['title'];
+    final date = DateTime.parse(json['date']);
     final caseTypesData = json['caseTypes'] as List<dynamic>?;
     final caseTypes = caseTypesData != null ? caseTypesData.map((type) => type.toString()).toList() : <String>[];
     final playlistsVk = json['playlistsVk'] as bool? ?? false;
@@ -63,6 +63,7 @@ class Case {
     final shortDescription = json['shortDescription'] as String?;
     final placeDetails = json['placeDetails'] as String?;
     final posterAverageColor = json['posterAverageColor'] as String?;
+
     return Case(
       id: id,
       title: title,
@@ -84,5 +85,4 @@ class Case {
       posterAverageColor: posterAverageColor,
     );
   }
-
 }
