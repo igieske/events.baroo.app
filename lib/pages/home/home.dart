@@ -5,7 +5,7 @@ import 'package:events_baroo_app/services/feed_cubit/feed_cubit.dart';
 import 'package:events_baroo_app/layout/page_rounded_wrapper.dart';
 import 'package:events_baroo_app/layout/case_card_shimmer.dart';
 import 'package:events_baroo_app/pages/home/home_feed.dart';
-import 'package:events_baroo_app/pages/home/home_past.dart';
+import 'package:events_baroo_app/pages/home/home_past_feed.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             physics: NeverScrollableScrollPhysics(),
             children: [
 
-              HomePast(
+              HomePastFeed(
                 goBackToFeed: () {
                   _pageViewController.animateToPage(
                     1,
