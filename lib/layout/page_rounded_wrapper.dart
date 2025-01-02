@@ -22,7 +22,6 @@ class PageRoundedWrapper extends StatelessWidget {
 
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(13),
               clipBehavior: Clip.antiAlias,
               width: double.infinity,
               decoration: BoxDecoration(
