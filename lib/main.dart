@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 
 import 'package:events_baroo_app/services/dict/dict_cubit.dart';
+import 'package:events_baroo_app/services/feed_cubit/feed_cubit.dart';
 import 'package:events_baroo_app/services/local_storage/local_storage_bloc.dart';
 
 import 'router.dart';
@@ -10,6 +12,8 @@ import 'themes/theme.dart';
 
 
 void main() async {
+
+  Intl.defaultLocale = 'ru';
 
   // final localStorage = await LocalStorage.read();
   final localStorageBloc = LocalStorageBloc();
@@ -30,6 +34,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => localStorageBloc),
         BlocProvider(create: (_) => DictCubit()..loadDictionaries(['all'])),
+        BlocProvider(create: (_) => FeedCubit()),
       ],
       child: MaterialApp.router(
         title: 'Baroo',
