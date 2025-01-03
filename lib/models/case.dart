@@ -1,3 +1,5 @@
+import 'package:events_baroo_app/models/avatar.dart';
+
 class Case {
   Case({
     required this.id,
@@ -26,7 +28,7 @@ class Case {
   final DateTime date;
   final List<String> caseTypes;
   final bool? playlistsVk;
-  final String? poster;
+  final Avatar? poster;
   final String? timeStart;
   final String? timeEntry;
   final List<String>? tags;
@@ -42,13 +44,9 @@ class Case {
 
   // конвертим json в объект Case
   factory Case.fromJson(Map<String, dynamic> json) {
-    final id = json['id'];
-    final title = json['title'];
-    final date = DateTime.parse(json['date']);
     final caseTypesData = json['caseTypes'] as List<dynamic>?;
     final caseTypes = caseTypesData != null ? caseTypesData.map((type) => type.toString()).toList() : <String>[];
     final playlistsVk = json['playlistsVk'] as bool? ?? false;
-    final poster = json['poster'] as String?;
     final timeStart = json['timeStart'] as String?;
     final timeEntry = json['timeEntry'] as String?;
     final tagsData = json['tags'] as List<dynamic>?;
@@ -65,12 +63,12 @@ class Case {
     final posterAverageColor = json['posterAverageColor'] as String?;
 
     return Case(
-      id: id,
-      title: title,
-      date: date,
+      id: json['id'],
+      title: json['title'],
+      date: DateTime.parse(json['date']),
       caseTypes: caseTypes,
       playlistsVk: playlistsVk,
-      poster: poster,
+      poster: json['poster'] == null ? null : Avatar.fromJson(json['poster']),
       timeStart: timeStart,
       timeEntry: timeEntry,
       tags: tags,
