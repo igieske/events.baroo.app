@@ -19,6 +19,7 @@ class CaseCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
 
+          // постер
           if (cs.poster != null)
             AspectRatio(
               aspectRatio: cs.poster!.aspectRatio,
@@ -46,36 +47,82 @@ class CaseCard extends StatelessWidget {
               ),
             ),
 
-          Container(
-            color: cs.poster != null && cs.poster?.averageColor != null
-              ? cs.poster!.averageColor
-              : Theme.of(context).colorScheme.secondary,
-            padding: EdgeInsets.all(12),
-            child: DefaultTextStyle(
-              style: TextStyle(color: Colors.white),
-              child: Column(
-                spacing: 6,
-                children: [
+          Stack(
+            alignment: Alignment.topCenter,
+            children: [
 
-                  Text(
-                    cs.title,
-                    style: TextStyle(fontSize: 18),
+              // градиент
+              if (cs.poster != null) SizedBox(
+                width: double.infinity,
+                height: 100,
+                child: ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withValues(alpha: 1),
+                      Colors.black.withValues(alpha: 0),
+                    ],
+                    stops: [0.35, 1],
+                  ).createShader(bounds),
+                  blendMode: BlendMode.dstIn,
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()..rotateX(3.14159),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(cs.poster!.url),
+                          fit: BoxFit.cover,
+                          alignment: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
                   ),
-
-                  Text(
-                    DateFormat(
-                      cs.timeStart != null ? 'd MMMM, HH:mm' : 'd MMMM'
-                    ).format(cs.date),
-                    style: TextStyle(color: Colors.white54),
-                  ),
-
-                  if (cs.shortDescription != null) Text(
-                      cs.shortDescription!
-                  ),
-
-                ],
+                ),
               ),
-            ),
+
+              // текст
+              Container(
+                decoration: BoxDecoration(
+                  color: cs.poster != null && cs.poster?.averageColor != null
+                    ? cs.poster!.averageColor
+                    : Theme.of(context).colorScheme.secondary,
+                  border: Border.all(
+                    color: Colors.white12,
+                    width: 3,
+                  ),
+                ),
+                padding: EdgeInsets.all(15),
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: DefaultTextStyle(
+                  style: TextStyle(color: Colors.white),
+                  child: Column(
+                    spacing: 6,
+                    children: [
+
+                      Text(
+                        cs.title,
+                        style: TextStyle(fontSize: 18),
+                      ),
+
+                      Text(
+                        DateFormat(
+                          cs.timeStart != null ? 'd MMMM, HH:mm' : 'd MMMM'
+                        ).format(cs.date),
+                        style: TextStyle(color: Colors.white54),
+                      ),
+
+                      if (cs.shortDescription != null) Text(
+                          cs.shortDescription!
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

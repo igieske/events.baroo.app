@@ -35,7 +35,7 @@ class HomeFeed extends StatelessWidget {
               const SizedBox(height: 10),
 
               Column(
-                spacing: 20,
+                spacing: 25,
                 children: cases.map((cs) => CaseCard(cs: cs)).toList(),
               ),
 
