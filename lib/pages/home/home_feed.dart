@@ -23,7 +23,6 @@ class HomeFeed extends StatelessWidget {
       selector: (state) => state.cases,
       builder: (context, cases) {
         return SingleChildScrollView(
-          padding: EdgeInsets.all(13),
           child: Column(
             children: [
 
@@ -36,7 +35,7 @@ class HomeFeed extends StatelessWidget {
               const SizedBox(height: 10),
 
               Column(
-                spacing: 10,
+                spacing: 20,
                 children: cases.map((cs) => CaseCard(cs: cs)).toList(),
               ),
 
