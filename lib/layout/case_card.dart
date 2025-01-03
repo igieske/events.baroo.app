@@ -42,35 +42,41 @@ class CaseCard extends StatelessWidget {
                         child: Icon(Icons.broken_image_outlined),
                       );
                   }
-                  return null;
                 },
               ),
             ),
 
           Container(
-            color: Theme.of(context).colorScheme.secondary,
-            child: Column(
-              children: [
+            color: cs.poster != null && cs.poster?.averageColor != null
+              ? cs.poster!.averageColor
+              : Theme.of(context).colorScheme.secondary,
+            padding: EdgeInsets.all(12),
+            child: DefaultTextStyle(
+              style: TextStyle(color: Colors.white),
+              child: Column(
+                spacing: 6,
+                children: [
 
-                Text(
-                  cs.title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+                  Text(
+                    cs.title,
+                    style: TextStyle(fontSize: 18),
+                  ),
 
-                Text(
-                  DateFormat(
-                    cs.timeStart != null ? 'd MMMM, HH:mm' : 'd MMMM'
-                  ).format(cs.date)
-                ),
+                  Text(
+                    DateFormat(
+                      cs.timeStart != null ? 'd MMMM, HH:mm' : 'd MMMM'
+                    ).format(cs.date),
+                    style: TextStyle(color: Colors.white54),
+                  ),
 
-                if (cs.shortDescription != null) Text(
-                    cs.shortDescription!
-                ),
+                  if (cs.shortDescription != null) Text(
+                      cs.shortDescription!
+                  ),
 
-              ],
+                ],
+              ),
             ),
           ),
-
         ],
       ),
     );
